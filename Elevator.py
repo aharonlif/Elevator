@@ -1,118 +1,93 @@
-import help_file as hf
 import pygame as pg
-from IPython.display import display, Image
+import sys
 
-class Elevator(pg.sprite.Sprite):
-        
-    def __init__(self, x, y):
+import floor
+
+#f = floor.p
+def p():
+    print(9)
+#print(f.pr())
+
+# class ColorDraw:
+#     black = (0, 0, 0)
+#     red = (0, 0, 0)
+#     white = (255, 255, 255)
+class Building(pg.sprite.Sprite):
+    def __init__(self, x, y, width, height, floors):
         super().__init__()
-        self.image = pg.image.load('elv.png')
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-    def position_x(self):
-        return self.rect.x
-    def position_y(self):
-        return self.rect.y
-    def move(self, new_location):
-        # TODO: need to check if the elevator moved or needs to refresh its.
-        self.rect = new_location
-
-class Floor:
-    def __init__(self, file_name, size, location):
-        self.file_name = file_name
-        self.size = size
-        self.location = location
-    def left_location(self, location):
-        return self.location[0]
-    def right_location(self, location):
-        return self.location[0] + self.size
-    def up_location(self, location):
-        return self.location[1]
-    def down_location(self, location):
-        return self.location[1] - self.size
-
-class Line:
-    def __init__(self):
-        self.line_width = 5
-        self.width_building = 3 # Define the width
-    def draw(self, screen, location):
-        x, y = location[0], location[1]
-        pg.draw.line(screen, Black, [x, y], [x+self.width_building, y+self.width_building], self.line_width)
-        pass
-    """Have a built-in function
-    def left_location(self, location):
-        return self.location[0]
-    def right_location(self, location):
-        return self.location[0] + self.size
-    def up_location(self, location):
-        return self.location[1]
-    def down_location(self, location):
-        return self.location[1] - self.size"""
-
-class Building:
-    def __init__(self, floors, location):
+        self.image = pg.Surface((width, height))
+        # self.image.fill(color)
+        self.rect = self.image.get_rect(topleft=(x, y))
+        self.walls = []
         self.floors = floors
-        """#delete...: size of building, and resize when added a new building
-        # self.length = length
-        # self.width = width"""
-        self.location = location
-        self.elevators = []
-    def find_elevator(self, location):
-        the_nearest_elevator = min(abs(i - location) for i in self.elevators)
-        return the_nearest_elevator
-    def move_elevator(self, floor):
-        #TODO: this
-        self.elevator_location = floor
+        # Add black walls to the building
+        for floor in self.floors:
+            #new_floor = floor.Floor(floor)
+            #pg.draw.new_floor(self.image, (0, 0, 0), (x, y), (x, y), 2)
+            pass
+        self._add_walls()
 
-class Management:
-    def __init__(self, building):
-        self.buildings = [building]
-        self.event = None
-    def find_elevator(self, building, floor):
-        while not building.find_elevator(floor):
-            self.checker_change_building(building)
-        building.move_elevator(floor)
+
+    def _add_walls(self):
+        top = self.rect
+        line_width = 4
+        #pg.draw.line(self.image, (0, 0, 0), top, line_width)
+class BuildingFloor:
+    def __init__(self, width, height, color, building_line):
+        self.width = width
+        self.height = height
+        self.color = color
+        self.buildings = []
+        self.building_line = building_line
+
     def add_building(self, building):
-        #TODO: add new building
         self.buildings.append(building)
-    def change_building(self):
-        #TODO this
-        pass
-    def checker_change_building(self):
-        pass
-        # if self.event == "Change Building":
-        #     self.change_building()
 
-def pg_run():
-    WIDTH = 1700
-    HEIGHT = 1300
-    REFRESH_RATE = 60
+    def draw(self, surface):
+        pg.draw.rect(surface, self.color, (0, surface.get_height() - self.height, self.width, self.height))
+        # for building in self.buildings:
+        #     building.draw(surface)
+
+
+def main():
+    p()
     pg.init()
-    screen = pg.display.set_mode((WIDTH, HEIGHT))
-    #TODO  "Press floor" button, and drawing of an arrow button.
-    pg.display.set_caption("buildings with a elevator")
-    screen.fill((255, 255, 200))
-    pg.display.flip()
 
-    # for i in range(3):
-    #     elv{f"i"} = Elevator(0,0)
+    # Set up the display
+    width, height = 800, 600
+    screen = pg.display.set_mode((width, height))
+    pg.display.set_caption("Single Building Floor")
 
-    
-    elv = Elevator(0,i*10)
-    clock = pg.time.Clock()
+    # Define the building line
+    building_line = [(100, 300), (300, 400), (600, 200)]
 
-    # all_sprites = pg.sprite.Group()
-    # all_sprites.add(elv)
-    # all_sprites.draw(screen)
+    # Create a building floor object
+    building_floor = BuildingFloor(width, 500, (100, 100, 100), building_line)
 
-    screen.blit(elv.image, (220,320))
-    clock.tick(REFRESH_RATE)
-    finish = False
-    while not finish:
+    # Generate buildings based on the building line
+    for i in range(len(building_line) - 1):
+        x1, y1 = building_line[i]
+        x2, y2 = building_line[i + 1]
+        building_width = x2 - x1
+        building_height = y1
+        building = Building(x1, 0, building_width, building_height, (200, 200, 200))
+        building_floor.add_building(building)
+
+    running = True
+    while running:
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                finish = True
-    pg.quit()
+                running = False
 
-pg_run()
+        screen.fill((255, 255, 255))  # Fill the screen with white color
+
+        # Draw the building floor
+        building_floor.draw(screen)
+
+        pg.display.flip()
+
+    pg.quit()
+    sys.exit()
+
+if __name__ == "__main__":
+    main()
