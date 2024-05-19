@@ -7,15 +7,17 @@ class Elevator(pg.sprite.Sprite):
         super().__init__()
         self.image = pg.image.load("help_files/elv.png")
         self.image = pg.transform.scale(self.image, (self.width, self.height))
-        self.location = bottomleft
+        # self.location = bottomleft
         self.rect = self.image.get_rect(bottomleft=bottomleft)
         self.floor = 0
+        self.motion = False
 
-    def move(self, floor):
-        #TODO: move
-        while self.floor < floor:
-
-            self.rect.y += time.time()   
+    def move(self, rect, floor, end=False):
+        self.motion = floor
+        self.rect = rect
+        if end:
+            motion = False
+        
 
 
 # import time
