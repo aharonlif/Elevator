@@ -5,12 +5,16 @@ class Elevator(pg.sprite.Sprite):
     width, height = 80, 80
     def __init__(self, bottomleft):
         super().__init__()
-        self.image = pg.image.load("help_files/elv.png")
-        self.image = pg.transform.scale(self.image, (self.width, self.height))
-        # self.location = bottomleft
+        self.image = pg.image.load("help_files/elv.png").convert_alpha()
+        self.image = pg.transform.scale(self.image, (self.width, self.height)).convert_alpha()
         self.rect = self.image.get_rect(bottomleft=bottomleft)
         self.floor = 0
         self.motion = False
+        self.current_floor = 0
+        
+    def move_to_floor(self, target_floor, y_position):
+        self.current_floor = target_floor
+        self.rect.bottomleft = (self.rect.x, y_position)
 
     def move(self, rect, floor, end=False):
         self.motion = floor
@@ -18,15 +22,6 @@ class Elevator(pg.sprite.Sprite):
         if end:
             motion = False
         
-
-
-# import time
-
-# class Elevator(pg.sprite.Sprite):
-#     def __init__(self, floors):
-#         super().__init__()
-#         self.current_floor = 0  # Assume elevator starts at floor 0
-#         self.floors = floors
 
 #     def move_to_floor(self, target_floor):
 #         # Move the elevator to the target floor
