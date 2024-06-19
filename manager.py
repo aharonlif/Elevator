@@ -30,11 +30,6 @@ class Manager:
                 if floor.button.check_click(mouse_pos):
                     build.move_elevator(floor.floor_number)
 
-    def move_elevator(the_building, floor):
-        the_elevator_arrived = False
-        while not the_elevator_arrived:
-            the_elevator_arrived = the_building.move_elevator(floor)
-            # self.handle_event() #TODO: this
 
     def run(self):
 

@@ -16,11 +16,17 @@ class Elevator(pg.sprite.Sprite):
         self.current_floor = target_floor
         self.rect.bottomleft = (self.rect.x, y_position)
 
-    def move(self, rect, floor, end=False):
-        self.motion = floor
-        self.rect = rect
-        if end:
-            motion = False
+    def update_location(self, floor):
+        self.floor = floor.floor_number
+        y_position = floor.rect.bottom
+        self.move_to_floor(floor.floor_number, y_position)
+        pass
+
+    # def move(self, rect, floor, end=False):
+    #     self.motion = floor
+    #     self.rect = rect
+    #     if end:
+    #         motion = False
         
 
 #     def move_to_floor(self, target_floor):

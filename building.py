@@ -61,11 +61,13 @@ class Building(pg.sprite.Group):
         return nearest_elevator
     
     def move_elevator(self, floor):
-        nearest_elevator = self._find_nearest_elevator(floor)
-        if not nearest_elevator:
-            pass#TODO: while loop 
-        else:
-            target_y_position = self.floors[floor].rect.bottom
-            nearest_elevator.move_to_floor(floor, target_y_position)
+        correct_floor = self.floors[floor]
+        nearest_elevator = self._find_nearest_elevator(floor) #TODO: list of cold elevators if have not elv
+        nearest_elevator.update_location(correct_floor)
 
+
+
+    def update_elevators_location(self, elevator):
+        "run of all elevators and if floor != floor now - update."
+        # elevator.update_location()
         

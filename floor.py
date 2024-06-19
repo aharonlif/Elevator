@@ -31,6 +31,8 @@ class Floor(pg.sprite.Sprite):
         self.rect = self.image.get_rect(bottomleft=bottomleft)
         self.floor_number = floor_number
         self.button = Button(self.floor_number)
+        self.button.rect.center = self.rect.center  # Add this line to set the button's position relative to the floor
+
         self.draw_button()
       
     def draw_button(self):
@@ -59,12 +61,8 @@ class Button(pg.sprite.Sprite):
         text_surface = self.font.render(str(self.number), True, self.text_color)
         text_rect = text_surface.get_rect(center=(self.size[0] // 2, self.size[1] // 2))
         button_surface.blit(text_surface, text_rect)
-        
         return button_surface
 
     def check_click(self, pos):
-        if self.rect.collidepoint(pos):
-            self.clicked = True
-            return True
-        return False
-
+        is_clicked = self.rect.collidepoint(pos)
+        return is_clicked
