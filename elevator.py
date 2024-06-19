@@ -14,7 +14,7 @@ class Elevator(pg.sprite.Sprite):
         self.movement_last_time = None
         self.y_position = bottomleft[1]  # y position in start
 
-    def moving(self):
+    def moving(self) -> bool:
         return self.floor != self.current_floor
 
     def move_to_floor(self, floor):
@@ -48,12 +48,12 @@ class Elevator(pg.sprite.Sprite):
         if not self.moving():
             return
         
-        if self.The_y_didnt_cross_the_floor(): #TODO declare only ==, with change y position when it more from floor
+        if self.the_y_crossed_the_floor(): #TODO declare only ==, with change y position when it more from floor
                 self.current_floor = self.floor
         y_position = self.calculate_position_to_move()
         self.rect.bottomleft = (self.rect.x, y_position)
 
-    def The_y_didnt_cross_the_floor(self):
+    def the_y_crossed_the_floor(self):
         floor = Floor.height + Line.thickness
         y_hight = Screen.hight - self.y_position
 

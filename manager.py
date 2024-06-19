@@ -11,19 +11,17 @@ class Manager:
     def __init__(self, buildings=1, floors=5, elv=3) -> None:
         pg.init()
         self.screen = pg.display.set_mode((WIDTH_SCREEN, HIGHT_SCREEN), pg.SRCALPHA)
-
         pg.display.set_caption("Building Floor")
+        self.buildings = [None] * buildings
+        self.group = pg.sprite.Group()
+        self.factory_of_buildings(floors, elv)
 
-        self.buildings = []
-        self.group = self.factory_of_buildings(buildings, floors, elv)
-        # self.g = building.Building(3, 4, 1)
-        # self.group.add(self.g)
 
-    def factory_of_buildings(self, buildings, floors, elv):
-        #TODO: for i in buildings.
-        build = building.Building(HIGHT_SCREEN, floors, elv, WIDTH_SCREEN)
-        self.buildings.append(build)
-        return build #TODO: return all buildings
+    def factory_of_buildings(self, floors, elv):
+        for build in range(len(self.buildings)):
+            current_building = building.Building(HIGHT_SCREEN, floors, elv, WIDTH_SCREEN)
+            self.buildings[build] = current_building
+            self.group.add(current_building)
 
     def check_floor_click(self, mouse_pos):
         for build in self.buildings:
@@ -36,9 +34,7 @@ class Manager:
             for elv in build.elevators:
                 elv.update_location()
 
-    def run(self):
-
-        
+    def run(self):  
         running = True
         while running:
             for event in pg.event.get():
@@ -48,17 +44,12 @@ class Manager:
                     if event.key == pg.K_q:
                         running = False
                 elif event.type == pg.MOUSEBUTTONDOWN:
-                    self.check_floor_click(event.pos) #TODO: need to declare befor asciment
+                    self.check_floor_click(event.pos)
             self.screen.fill((255, 255, 255)) 
             self.update()
             self.draw(self.screen)
-
-
             pg.display.flip()
-
     pg.quit()
-
-
 
     def draw(self, screen):
         self.group.draw(screen)

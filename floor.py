@@ -43,7 +43,7 @@ class Floor(pg.sprite.Sprite):
 class Button(pg.sprite.Sprite):
     s = Floor.width/4
     size = (s, s)
-    b_color = (255, 253, 208)  # Cream color
+    color = (255, 253, 208)  # Cream color
     text_color = (0, 0, 0)
 
     def __init__(self, number):
@@ -57,7 +57,7 @@ class Button(pg.sprite.Sprite):
 
     def create_button_image(self):
         button_surface = pg.Surface(self.size, pg.SRCALPHA)
-        pg.draw.circle(button_surface, self.b_color, (self.size[0] // 2, self.size[1] // 2), self.size[0] // 2)        
+        pg.draw.circle(button_surface, self.color, (self.size[0] // 2, self.size[1] // 2), self.size[0] // 2)        
         text_surface = self.font.render(str(self.number), True, self.text_color)
         text_rect = text_surface.get_rect(center=(self.size[0] // 2, self.size[1] // 2))
         button_surface.blit(text_surface, text_rect)
@@ -67,11 +67,13 @@ class Button(pg.sprite.Sprite):
         is_clicked = self.rect.collidepoint(pos)
         return is_clicked
 
-    # def change_color_temporarily(self):
-    #     self.b_color = (0, 255, 0)
-    #     self.image = self.create_button_image()
-    #     self.rect = self.image.get_rect(center=self.rect.center)
-    #     pg.time.delay(2350)
-    #     self.b_color = Button.b_color
-    #     self.image = self.create_button_image()
-    #     self.rect = self.image.get_rect(center=self.rect.center)
+    def change_color_temporarily(self):
+        button_surface = pg.Surface(self.size, pg.SRCALPHA)
+        pg.draw.circle(button_surface, self.color, (self.size[0] // 2, self.size[1] // 2), self.size[0] // 2)
+        # self.color = (0, 255, 0)
+        # self.image = self.create_button_image()
+        # self.rect = self.image.get_rect(center=self.rect.center)
+        # pg.time.delay(2350)
+        # self.color = Button.color
+        # self.image = self.create_button_image()
+        # self.rect = self.image.get_rect(center=self.rect.center)
