@@ -1,9 +1,10 @@
 import pygame as pg
 
 import building
+from settings import Screen
 
 
-WIDTH_SCREEN, HIGHT_SCREEN = 1200, 600 #Screen size need to be in setting file
+WIDTH_SCREEN, HIGHT_SCREEN = Screen.width, Screen.hight
 
 class Manager:
     
@@ -30,6 +31,10 @@ class Manager:
                 if floor.button.check_click(mouse_pos):
                     build.move_elevator(floor.floor_number)
 
+    def update(self):
+        for build in self.buildings:
+            for elv in build.elevators:
+                elv.update_location()
 
     def run(self):
 
@@ -42,10 +47,10 @@ class Manager:
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_q:
                         running = False
-                        # self.handle_event(event)
-                if event.type == pg.MOUSEBUTTONDOWN:
+                elif event.type == pg.MOUSEBUTTONDOWN:
                     self.check_floor_click(event.pos) #TODO: need to declare befor asciment
-                self.screen.fill((255, 255, 255)) 
+            self.screen.fill((255, 255, 255)) 
+            self.update()
             self.draw(self.screen)
 
 

@@ -3,7 +3,7 @@ import pygame as pg
 
 class Line(pg.sprite.Sprite):
     color = (0, 0, 0)
-    width = 7
+    thickness = 7
     def __init__(self, start_pos, end_pos):
         super().__init__()
         self.start_pos = start_pos[0]
@@ -66,3 +66,12 @@ class Button(pg.sprite.Sprite):
     def check_click(self, pos):
         is_clicked = self.rect.collidepoint(pos)
         return is_clicked
+
+    # def change_color_temporarily(self):
+    #     self.b_color = (0, 255, 0)
+    #     self.image = self.create_button_image()
+    #     self.rect = self.image.get_rect(center=self.rect.center)
+    #     pg.time.delay(2350)
+    #     self.b_color = Button.b_color
+    #     self.image = self.create_button_image()
+    #     self.rect = self.image.get_rect(center=self.rect.center)
