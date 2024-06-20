@@ -12,6 +12,9 @@ class Elevator(pg.sprite.Sprite):
         self.image = pg.image.load("help_files/elv.png").convert_alpha()
         self.image = pg.transform.scale(self.image, (self.width, self.height)).convert_alpha()
         self.rect = self.image.get_rect(bottomleft=bottomleft)
+        pg.mixer.init()
+        self.arrived_sound = pg.mixer.Sound("help_files/ding.mp3")
+
         self.floor = 0
         self.current_floor = 0
         self.movement_last_time = None
@@ -55,9 +58,7 @@ class Elevator(pg.sprite.Sprite):
         self.rect.bottomleft = (self.rect.x, y_position)
         
     def arrival_sound(self):
-        pg.mixer.init()
-        self.arrival_sound = pg.mixer.Sound("help_files/ding.mp3")
-        self.arrival_sound.play()
+        self.arrived_sound.play()
 
     def arrived(self):
         floor = Floor.height + Line.thickness
