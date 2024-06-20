@@ -32,7 +32,7 @@ class Manager:
 
     def update(self):
         for build in self.buildings:
-            build.update_elevators_location()
+            build.update()
         #update Buttons
         #update order elvs array - check if have any free elv
 

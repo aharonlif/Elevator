@@ -5,20 +5,6 @@ from black_line import Line
 from elevator import Elevator as elv
 
 
-class BlackRectangle(pg.sprite.Sprite):
-    def __init__(self, start_pos, end_pos):
-        super().__init__()
-        x1, y1 = start_pos
-        x2, y2 = end_pos
-        width = abs(x2 - x1)
-        height = abs(y2 - y1)
-        
-        self.image = pg.Surface((width, height))
-        self.image.fill((0, 0, 0))  # Fill the surface with black color
-        self.rect = self.image.get_rect()
-
-        self.rect.topleft = (min(x1, x2), min(y1, y2)) #top left or anysing instead
-
 class Building(pg.sprite.Group):
     difference_building = flr.width*2 + elv.width
 
@@ -31,6 +17,7 @@ class Building(pg.sprite.Group):
         self.building_number = building_number
         self.floors_factory()
         self.elevators_factory(elevators)
+        self.calls_to_the_elevator = []
 
         
     def floors_factory(self):
@@ -43,18 +30,11 @@ class Building(pg.sprite.Group):
             if i == 0:
                 line_position -= flr.height
             else:
+                #TODO: a good black line
                 print(i)
 
                 line_position -= ((i-1) * (flr.height + Line.thickness))
                 self.add(Line((0, line_position), (flr.width-Line.thickness, line_position)))
-
-            # if i < len(self.floors):
-            #     start_pos = self.floors[i].rect.midbottom
-            #     end_pos = (self.floors[i].rect.midbottom[0], self.floors[i].rect.midbottom[1] + flr.height + line.width)
-            #     print("st, end        =", start_pos, end_pos)
-            #     new_line = line(start_pos, end_pos)
-            #     self.add(new_line)
-        # s = BlackRectangle(self.floors[0].rect, self.floors[-1].rect)
 
     def elevators_factory(self, elevators):
         for i in range(elevators):
@@ -65,18 +45,26 @@ class Building(pg.sprite.Group):
             self.elevators[i] = elevator
 
     def _find_nearest_elevator(self, floor):
-        nearest_elevator = min((elevator for elevator in self.elevators if not (elevator.moving() and elevator.floor != floor)), key=lambda elevator: abs(elevator.floor - floor))
-        return nearest_elevator if nearest_elevator.floor != floor else None
+        try:
+            nearest_elevator = min((elevator for elevator in self.elevators if not (elevator.moving() and elevator.floor != floor)), key=lambda elevator: abs(elevator.floor - floor))
+        except Exception:
+            if floor  not in self.calls_to_the_elevator:
+                self.calls_to_the_elevator.append(floor)
+            return
+        return nearest_elevator
     
     def move_elevator(self, floor):
-        # correct_floor = self.floors[floor]
-        nearest_elevator = self._find_nearest_elevator(floor) #TODO: list of cold elevators if have not elv
+        nearest_elevator = self._find_nearest_elevator(floor) 
         if nearest_elevator:
             nearest_elevator.move_to_floor(floor)
+            return True
 
 
 
-    def update_elevators_location(self):
-        "run of all elevators and if floor != floor now - update."
+    def update(self):
+        "run of all elevators and if need to move - move it."
+        if self.calls_to_the_elevator:
+            if self.move_elevator(self.calls_to_the_elevator[0]):
+                self.calls_to_the_elevator.pop(0)
         for elv in self.elevators:
             elv.update_location()        
