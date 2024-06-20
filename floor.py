@@ -1,10 +1,10 @@
 import pygame as pg
 
 from button import Button
-
+from settings import Floor as f
 
 class Floor(pg.sprite.Sprite):
-    width, height = 150, 80
+    width, height = f.width, f.height
     def __init__(self, floor_number, bottomleft):
         super().__init__()
         self.image = pg.image.load("help_files/floor_image.png")

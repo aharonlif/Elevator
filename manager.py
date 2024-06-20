@@ -4,13 +4,11 @@ import building
 from settings import Screen
 
 
-WIDTH_SCREEN, HIGHT_SCREEN = Screen.width, Screen.hight
-
 class Manager:
     
     def __init__(self, buildings=1, floors=5, elv=3) -> None:
         pg.init()
-        self.screen = pg.display.set_mode((WIDTH_SCREEN, HIGHT_SCREEN), pg.SRCALPHA)
+        self.screen = pg.display.set_mode((Screen.width, Screen.hight), pg.SRCALPHA)
         pg.display.set_caption("Building Floor")
         self.buildings = [None] * buildings
         self.group = pg.sprite.Group()
@@ -19,7 +17,7 @@ class Manager:
 
     def factory_of_buildings(self, floors, elv):
         for build in range(len(self.buildings)):
-            current_building = building.Building(HIGHT_SCREEN, floors, elv)
+            current_building = building.Building(floors, elv)
             self.buildings[build] = current_building
             self.group.add(current_building)
 
@@ -33,6 +31,7 @@ class Manager:
     def update(self):
         for build in self.buildings:
             build.update()
+        #TODO: 2 lines below.
         #update Buttons
         #update order elvs array - check if have any free elv
 

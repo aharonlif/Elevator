@@ -1,9 +1,10 @@
 import pygame as pg
 
+from settings import Line as l
 
 class Line(pg.sprite.Sprite):
-    color = (0, 0, 0)
-    thickness = 0.5
+    color = l.color
+    thickness = l.thickness
     def __init__(self, start_pos, end_pos):
         super().__init__()
         self.start_pos = start_pos[0]

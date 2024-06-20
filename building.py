@@ -3,17 +3,16 @@ import pygame as pg
 from floor import Floor as flr
 from black_line import Line
 from elevator import Elevator as elv
-
+from settings import Screen
 
 class Building(pg.sprite.Group):
     difference_building = flr.width*2 + elv.width
 
-    def __init__(self, y_screen, floors: int, elevators: int, building_number=0):
+    def __init__(self, floors: int, elevators: int, building_number=0):
         super().__init__()
         self.floors = [None] * floors
         self.elevators = [None] * elevators
         self.building_position_x = 0
-        self.y_screen = y_screen
         self.building_number = building_number
         self.floors_factory()
         self.elevators_factory(elevators)
@@ -21,25 +20,28 @@ class Building(pg.sprite.Group):
 
         
     def floors_factory(self):
-        y_position = self.y_screen
-        line_position = self.y_screen
+        y_position = Screen.hight
+        line_position = Screen.hight
         for i in range(len(self.floors)):
             self.floors[i] = flr(i, bottomleft=(0, y_position))
             self.add(self.floors[i])
             y_position -= flr.height + Line.thickness
             if i == 0:
-                line_position -= flr.height
-            else:
-                #TODO: a good black line
-                print(i)
-
-                line_position -= ((i-1) * (flr.height + Line.thickness))
+                pass
+            elif i == 1:
+                line_position += Line.thickness     # line position changed in the first iteration, when y_position changed
                 self.add(Line((0, line_position), (flr.width-Line.thickness, line_position)))
+
+            else:
+
+                line_position -= flr.height + Line.thickness
+                self.add(Line((0, line_position), (flr.width-Line.thickness, line_position)))
+
 
     def elevators_factory(self, elevators):
         for i in range(elevators):
             x_position = self.building_position_x + flr.width + (i* elv.width)
-            y_position = self.y_screen
+            y_position = Screen.hight
             elevator = elv(bottomleft=(x_position, y_position))
             self.add(elevator)
             self.elevators[i] = elevator
