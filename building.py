@@ -20,7 +20,7 @@ class BlackRectangle(pg.sprite.Sprite):
         self.rect.topleft = (min(x1, x2), min(y1, y2)) #top left or anysing instead
 
 class Building(pg.sprite.Group):
-    difference_building = flr.width*2 + elv.width #TODO: add number of elv
+    difference_building = flr.width*2 + elv.width
 
     def __init__(self, y_screen, floors: int, elevators: int, building_number=0):
         super().__init__()
@@ -68,7 +68,7 @@ class Building(pg.sprite.Group):
 
 
 
-    def update_elevators_location(self, elevator):
+    def update_elevators_location(self):
         "run of all elevators and if floor != floor now - update."
-        # elevator.update_location()
-        
+        for elv in self.elevators:
+            elv.update_location()        
