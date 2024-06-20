@@ -1,7 +1,7 @@
 import pygame as pg
 
 from floor import Floor as flr
-from floor import Line as line
+from black_line import Line
 from elevator import Elevator as elv
 
 
@@ -35,10 +35,18 @@ class Building(pg.sprite.Group):
         
     def floors_factory(self):
         y_position = self.y_screen
+        line_position = self.y_screen
         for i in range(len(self.floors)):
             self.floors[i] = flr(i, bottomleft=(0, y_position))
             self.add(self.floors[i])
-            y_position -= flr.height + line.thickness
+            y_position -= flr.height + Line.thickness
+            if i == 0:
+                line_position -= flr.height
+            else:
+                print(i)
+
+                line_position -= ((i-1) * (flr.height + Line.thickness))
+                self.add(Line((0, line_position), (flr.width-Line.thickness, line_position)))
 
             # if i < len(self.floors):
             #     start_pos = self.floors[i].rect.midbottom

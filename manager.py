@@ -19,7 +19,7 @@ class Manager:
 
     def factory_of_buildings(self, floors, elv):
         for build in range(len(self.buildings)):
-            current_building = building.Building(HIGHT_SCREEN, floors, elv, WIDTH_SCREEN)
+            current_building = building.Building(HIGHT_SCREEN, floors, elv)
             self.buildings[build] = current_building
             self.group.add(current_building)
 
@@ -27,12 +27,14 @@ class Manager:
         for build in self.buildings:
             for floor in build.floors:
                 if floor.button.check_click(mouse_pos):
+                    floor.button.change_color_temporarily((0,233,0),1)
                     build.move_elevator(floor.floor_number)
 
     def update(self):
         for build in self.buildings:
-            for elv in build.elevators:
-                elv.update_location()
+            build.update_elevators_location()
+        #update Buttons
+        #update order elvs array - check if have any free elv
 
     def run(self):  
         running = True
@@ -40,11 +42,13 @@ class Manager:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     running = False 
-                if event.type == pg.KEYDOWN:
+                elif event.type == pg.KEYDOWN:
                     if event.key == pg.K_q:
                         running = False
                 elif event.type == pg.MOUSEBUTTONDOWN:
                     self.check_floor_click(event.pos)
+                # elif event.type == pg.USEREVENT + 1:
+                #     button.reset_color()
             self.screen.fill((255, 255, 255)) 
             self.update()
             self.draw(self.screen)

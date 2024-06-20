@@ -1,6 +1,7 @@
 import pygame as pg
 import time
-from floor import Floor, Line
+from floor import Floor
+from black_line import Line
 from settings import Screen
 class Elevator(pg.sprite.Sprite):
     width, height = 80, 80
@@ -54,6 +55,7 @@ class Elevator(pg.sprite.Sprite):
                 return
         y_position = self.calculate_position_to_move()
         self.rect.bottomleft = (self.rect.x, y_position)
+        
     def elevator_arrival_sound(self):
         pg.mixer.init()
         self.arrival_sound = pg.mixer.Sound("help_files/ding.mp3")
