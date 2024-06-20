@@ -2,11 +2,11 @@ import pygame as pg
 import time
 from floor import Floor
 from black_line import Line
-from settings import Screen
+import settings
 
 
 class Elevator(pg.sprite.Sprite):
-    width, height = 80, 80
+    width, height = settings.Floor.height, settings.Floor.height
     def __init__(self, bottomleft):
         super().__init__()
         self.image = pg.image.load("help_files/elv.png").convert_alpha()
@@ -27,36 +27,41 @@ class Elevator(pg.sprite.Sprite):
     def calculate_position_to_move(self):
         # if self.movement_start_time is None:
         #     return self.y_position
-        floor_height = 80  #TODO settings Assuming floor height is 80 pixels
         floor_travel_time = 0.5 
         current_time = time.time()
         elapsed_time = current_time - self.movement_last_time
         floors_to_move = elapsed_time / floor_travel_time
-        y_move = floors_to_move * floor_height
+        y_move = floors_to_move * settings.Floor.height
         self.movement_last_time = current_time
         self.y_position += y_move if self.current_floor > self.floor else -y_move
         return self.y_position
 
+    def passed_2_seconds(self):
+        current_time = time.time()
+        elapsed_time = current_time - self.movement_last_time
+        return elapsed_time > 2
 
     def update_location(self):
         if not self.moving():
             return
         
-        if self.the_y_crossed_the_floor(): #TODO declare only ==, with change y position when it more from floor
+        if self.arrived(): #todo: declare only ==, with change y position when it more from floor
+            if self.passed_2_seconds():
                 self.current_floor = self.floor
-                self.elevator_arrival_sound()
-                return
+                self.arrival_sound()
+            return
+            
         y_position = self.calculate_position_to_move()
         self.rect.bottomleft = (self.rect.x, y_position)
         
-    def elevator_arrival_sound(self):
+    def arrival_sound(self):
         pg.mixer.init()
         self.arrival_sound = pg.mixer.Sound("help_files/ding.mp3")
         self.arrival_sound.play()
 
-    def the_y_crossed_the_floor(self):
+    def arrived(self):
         floor = Floor.height + Line.thickness
-        y_hight = Screen.hight - self.y_position
+        y_hight = settings.Screen.hight - self.y_position
 
         return (floor * self.floor) < y_hight if self.floor > self.current_floor else (floor * self.floor) > y_hight
 
