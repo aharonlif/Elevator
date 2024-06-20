@@ -15,7 +15,7 @@ class Elevator(pg.sprite.Sprite):
         self.floor = 0
         self.current_floor = 0
         self.movement_last_time = None
-        self.y_position = bottomleft[1]  # y position in start
+        self.y_position = bottomleft[1]  # y position at start
 
     def moving(self) -> bool:
         return self.floor != self.current_floor
@@ -27,23 +27,14 @@ class Elevator(pg.sprite.Sprite):
     def calculate_position_to_move(self):
         # if self.movement_start_time is None:
         #     return self.y_position
-        
+        floor_height = 80  #TODO settings Assuming floor height is 80 pixels
+        floor_travel_time = 0.5 
         current_time = time.time()
         elapsed_time = current_time - self.movement_last_time
-        y_move = elapsed_time/5 #TODO this bettetr
-
-
-        # # Clamp the position to the target position
-        # if (direction == 1 and self.y_position >= target_y_position) or (direction == -1 and self.y_position <= target_y_position):
-        #     self.y_position = target_y_position
-        #     self.current_floor = self.floor.floor_number
-        #     self.movement_start_time = None  # Stop the movement
-        # else:
-        #     # Update the movement start time for the next calculation
-        #     self.movement_start_time = current_time - (elapsed_time % 0.5)
-        towards = 1 if self.floor < self.current_floor else -1
-        y_move *= towards
-        self.y_position += y_move
+        floors_to_move = elapsed_time / floor_travel_time
+        y_move = floors_to_move * floor_height
+        self.movement_last_time = current_time
+        self.y_position += y_move if self.current_floor > self.floor else -y_move
         return self.y_position
 
 
