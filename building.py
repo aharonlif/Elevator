@@ -57,13 +57,14 @@ class Building(pg.sprite.Group):
             self.elevators[i] = elevator
 
     def _find_nearest_elevator(self, floor):
-        nearest_elevator = min((elevator for elevator in self.elevators if not elevator.moving()), key=lambda elevator: abs(elevator.current_floor - floor))
-        return nearest_elevator
+        nearest_elevator = min((elevator for elevator in self.elevators if not (elevator.moving() and elevator.floor != floor)), key=lambda elevator: abs(elevator.floor - floor))
+        return nearest_elevator if nearest_elevator.floor != floor else None
     
     def move_elevator(self, floor):
         # correct_floor = self.floors[floor]
         nearest_elevator = self._find_nearest_elevator(floor) #TODO: list of cold elevators if have not elv
-        nearest_elevator.move_to_floor(floor)
+        if nearest_elevator:
+            nearest_elevator.move_to_floor(floor)
 
 
 
