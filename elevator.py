@@ -50,8 +50,14 @@ class Elevator(pg.sprite.Sprite):
         
         if self.the_y_crossed_the_floor(): #TODO declare only ==, with change y position when it more from floor
                 self.current_floor = self.floor
+                self.elevator_arrival_sound()
+                return
         y_position = self.calculate_position_to_move()
         self.rect.bottomleft = (self.rect.x, y_position)
+    def elevator_arrival_sound(self):
+        pg.mixer.init()
+        self.arrival_sound = pg.mixer.Sound("help_files/ding.mp3")
+        self.arrival_sound.play()
 
     def the_y_crossed_the_floor(self):
         floor = Floor.height + Line.thickness
