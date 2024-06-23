@@ -29,11 +29,10 @@ class Building(pg.sprite.Group):
             if i == 0:
                 pass
             elif i == 1:
-                line_position += Line.thickness     # line position changed in the first iteration, when y_position changed
+                line_position -= flr.height
                 self.add(Line((0, line_position), (flr.width-Line.thickness, line_position)))
 
             else:
-
                 line_position -= flr.height + Line.thickness
                 self.add(Line((0, line_position), (flr.width-Line.thickness, line_position)))
 
@@ -60,6 +59,13 @@ class Building(pg.sprite.Group):
         if nearest_elevator:
             nearest_elevator.move_to_floor(floor)
             return True
+
+    def change_button_color(self, floor=all):
+        if floor == all: #Test color button
+            for flr in self.floors:
+                flr.button.change_color_temporarily()
+        else:
+            self.floors[floor].button.change_color_temporarily()
 
 
 

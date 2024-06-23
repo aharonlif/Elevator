@@ -15,6 +15,7 @@ class Elevator(pg.sprite.Sprite):
         pg.mixer.init()
         self.arrived_sound = pg.mixer.Sound("help_files/ding.mp3")
 
+        self.made_a_sound = False
         self.floor = 0
         self.current_floor = 0
         self.movement_last_time = None
@@ -48,10 +49,13 @@ class Elevator(pg.sprite.Sprite):
         if not self.moving():
             return
         
-        if self.arrived(): #todo: declare only ==, with change y position when it more from floor
+        if self.arrived():
+            if not self.made_a_sound: #todo: declare only ==, with change y position when it more from floor
+                self.arrival_sound()
+                self.made_a_sound= True
             if self.passed_2_seconds():
                 self.current_floor = self.floor
-                self.arrival_sound()
+                self.made_a_sound = False
             return
             
         y_position = self.calculate_position_to_move()

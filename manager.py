@@ -25,7 +25,7 @@ class Manager:
         for build in self.buildings:
             for floor in build.floors:
                 if floor.button.check_click(mouse_pos):
-                    floor.button.change_color_temporarily((0,233,0),1)
+                    floor.button.change_color_temporarily()
                     build.move_elevator(floor.floor_number)
 
     def update(self):
@@ -44,6 +44,8 @@ class Manager:
                 elif event.type == pg.KEYDOWN:
                     if event.key == pg.K_q:
                         running = False
+                    if event.key == pg.K_a:
+                        self.buildings[0].change_button_color()
                 elif event.type == pg.MOUSEBUTTONDOWN:
                     self.check_floor_click(event.pos)
                 # elif event.type == pg.USEREVENT + 1:
