@@ -1,27 +1,54 @@
 import pygame as pg
-
 import building
 from settings import Screen
 
-
 class Manager:
-    
+    """
+    Manages the game, including the screen setup, building initialization, 
+    event handling, and game loop.
+
+    Attributes:
+        screen (pygame.Surface): The display surface.
+        buildings (list): List of building instances.
+        group (pygame.sprite.Group): Group of all sprites.
+    """
+
     def __init__(self, buildings=1, floors=5, elevators=3) -> None:
+        """
+        Initializes the Manager with the given number of buildings, floors, and elevators.
+        
+        Args:
+            buildings (int): Number of buildings.
+            floors (int): Number of floors per building.
+            elevators (int): Number of elevators per building.
+        """
         pg.init()
-        self.screen = pg.display.set_mode((Screen.width, Screen.hight), pg.SRCALPHA)
+        self.screen = pg.display.set_mode((Screen.width, Screen.height), pg.SRCALPHA)
         pg.display.set_caption("Building Floor")
         self.buildings = [None] * buildings
         self.group = pg.sprite.Group()
         self.factory_of_buildings(floors, elevators)
 
-
-    def factory_of_buildings(self, floors, elv):
+    def factory_of_buildings(self, floors, elevators):
+        """
+        Creates and initializes buildings with the given number of floors and elevators.
+        
+        Args:
+            floors (int): Number of floors per building.
+            elevators (int): Number of elevators per building.
+        """
         for build in range(len(self.buildings)):
-            current_building = building.Building(floors, elv, building_number=build)
+            current_building = building.Building(floors, elevators, building_number=build)
             self.buildings[build] = current_building
             self.group.add(current_building)
 
     def check_floor_click(self, mouse_pos):
+        """
+        Checks if a floor button is clicked and moves the elevator to the respective floor.
+        
+        Args:
+            mouse_pos (tuple): The position of the mouse click.
+        """
         for build in self.buildings:
             for floor in build.floors:
                 if floor.button.check_click(mouse_pos):
@@ -29,11 +56,17 @@ class Manager:
                     build.move_elevator(floor.floor_number)
 
     def update(self):
+        """
+        Updates the state of all buildings.
+        """
         for build in self.buildings:
             build.update()
-        #TODO: update Buttons
+        # TODO: update Buttons
 
-    def run(self):  
+    def run(self):
+        """
+        Main game loop. Handles events, updates the screen, and redraws all elements.
+        """
         running = True
         while running:
             for event in pg.event.get():
@@ -52,7 +85,13 @@ class Manager:
             self.update()
             self.draw(self.screen)
             pg.display.flip()
-    pg.quit()
+        pg.quit()
 
     def draw(self, screen):
+        """
+        Draws all sprites to the screen.
+        
+        Args:
+            screen (pygame.Surface): The display surface.
+        """
         self.group.draw(screen)
