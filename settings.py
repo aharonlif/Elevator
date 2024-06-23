@@ -5,12 +5,12 @@ class Screen:
 
 
 class Floor:
-    width = 150/2
-    height =  80/2
+    width = 75
+    height =  40
 
 class Line:
     color = (0, 0, 0)
-    thickness = 3
+    thickness = 1/20 * Floor.height
 
 #TODO Screen will be an array, size of black line, floor will clare heare
 

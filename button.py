@@ -8,6 +8,8 @@ class Button(pg.sprite.Sprite):
     size = (s, s)
     color = (255, 253, 208) 
     text_color = (0, 0, 0)
+    text_size = int(s*1)
+
 
     def __init__(self, number, color=(255, 253, 208)):
 
@@ -15,7 +17,7 @@ class Button(pg.sprite.Sprite):
         self.color = color  # Cream color
         pg.font.init()
         self.number = number
-        self.font = pg.font.SysFont(None, 30)
+        self.font = pg.font.SysFont(None, self.text_size)
         self.image = self.create_button_image()
         self.rect = self.image.get_rect()
         self.clicked = False
