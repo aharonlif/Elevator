@@ -9,10 +9,10 @@ class Button(pg.sprite.Sprite):
     color = (255, 253, 208) 
     text_color = (0, 0, 0)
 
-    def __init__(self, number):
+    def __init__(self, number, color=(255, 253, 208)):
 
         super().__init__()
-        self.color = (255, 253, 208)  # Cream color
+        self.color = color  # Cream color
         pg.font.init()
         self.number = number
         self.font = pg.font.SysFont(None, 30)
@@ -33,9 +33,10 @@ class Button(pg.sprite.Sprite):
         return is_clicked
 
     def change_color_temporarily(self, duration=1):
-        self.color = (200,200,200)
-        self.image = self.create_button_image()
-        self.change_end_time = pg.time.get_ticks() + duration * 1000
+        self = Button(self.number, color=(200,200,200))
+        # self.color = (200,200,200)
+        # self.image = self.create_button_image()
+        # self.change_end_time = pg.time.get_ticks() + duration * 1000
 
     #     # Warning: it dos that the buttons will not arrive in secound time!
     #     # button_surface = pg.Surface(self.size, pg.SRCALPHA)

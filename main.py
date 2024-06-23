@@ -2,11 +2,11 @@ from manager import Manager
 
 
 def main():
-    #TODO: random number
+    #todo: random number
     buildings = 1
     floors = 6
-    elevators = 4
-    manager = Manager(buildings=buildings, floors=floors, elv=elevators)
+    elevators = 2
+    manager = Manager(buildings=buildings, floors=floors, elevators=elevators)
     manager.run()
        
 

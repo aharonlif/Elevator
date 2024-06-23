@@ -5,8 +5,8 @@ class Screen:
 
 
 class Floor:
-    width = 150
-    height =  80
+    width = 150/2
+    height =  80/2
 
 class Line:
     color = (0, 0, 0)

@@ -8,38 +8,43 @@ from settings import Screen
 class Building(pg.sprite.Group):
     difference_building = flr.width*2 + elv.width
 
-    def __init__(self, floors: int, elevators: int, building_number=0):
+    def __init__(self, floors: int, elevators: int, building_number=0, x_position=0):
         super().__init__()
         self.floors = [None] * floors
         self.elevators = [None] * elevators
-        self.building_position_x = 0
-        self.building_number = building_number
+        self.x_position = x_position
+        self.number = building_number
+        self.calculate_x_position()
         self.floors_factory()
         self.elevators_factory(elevators)
         self.calls_to_the_elevator = []
 
+    def calculate_x_position(self):
+        if self.number and not self.x_position:
+            plase_elvs = len(self.elevators) * elv.width + flr.width
+            self.x_position = (plase_elvs)  * self.number
         
     def floors_factory(self):
         y_position = Screen.hight
-        line_position = Screen.hight
+        line_y_position = Screen.hight
         for i in range(len(self.floors)):
-            self.floors[i] = flr(i, bottomleft=(0, y_position))
+            self.floors[i] = flr(i, bottomleft=(self.x_position, y_position))
             self.add(self.floors[i])
             y_position -= flr.height + Line.thickness
-            if i == 0:
-                pass
-            elif i == 1:
-                line_position -= flr.height
-                self.add(Line((0, line_position), (flr.width-Line.thickness, line_position)))
 
-            else:
-                line_position -= flr.height + Line.thickness
-                self.add(Line((0, line_position), (flr.width-Line.thickness, line_position)))
+            if i == 1:   # if i == 0 don't need to draw black line, only between floors.
+                line_y_position -= flr.height
+                self.add(Line(bottomleft=(self.x_position, line_y_position)))
+                continue
+
+            if i:
+                line_y_position -= flr.height + Line.thickness
+                self.add(Line(bottomleft=(self.x_position, line_y_position)))
 
 
     def elevators_factory(self, elevators):
         for i in range(elevators):
-            x_position = self.building_position_x + flr.width + (i* elv.width)
+            x_position = self.x_position + flr.width + (i* elv.width)
             y_position = Screen.hight
             elevator = elv(bottomleft=(x_position, y_position))
             self.add(elevator)

@@ -6,18 +6,18 @@ from settings import Screen
 
 class Manager:
     
-    def __init__(self, buildings=1, floors=5, elv=3) -> None:
+    def __init__(self, buildings=1, floors=5, elevators=3) -> None:
         pg.init()
         self.screen = pg.display.set_mode((Screen.width, Screen.hight), pg.SRCALPHA)
         pg.display.set_caption("Building Floor")
         self.buildings = [None] * buildings
         self.group = pg.sprite.Group()
-        self.factory_of_buildings(floors, elv)
+        self.factory_of_buildings(floors, elevators)
 
 
     def factory_of_buildings(self, floors, elv):
         for build in range(len(self.buildings)):
-            current_building = building.Building(floors, elv)
+            current_building = building.Building(floors, elv, building_number=build)
             self.buildings[build] = current_building
             self.group.add(current_building)
 
@@ -31,9 +31,7 @@ class Manager:
     def update(self):
         for build in self.buildings:
             build.update()
-        #TODO: 2 lines below.
-        #update Buttons
-        #update order elvs array - check if have any free elv
+        #TODO: update Buttons
 
     def run(self):  
         running = True
