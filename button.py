@@ -31,16 +31,17 @@ class Button(pg.sprite.Sprite):
         text_rect = text_surface.get_rect(center=(center, center))
         button_surface.blit(text_surface, text_rect)
         return button_surface
+    #     self.rect = self.image.get_rect(topleft=position)
 
     def check_click(self, pos):
         is_clicked = self.rect.collidepoint(pos)
         return is_clicked
 
     def change_color_temporarily(self, duration=1):
-        pass
         # self = Button(self.number, color=(200,200,200))
-        # self.color = (200,200,200)
-        # self.image = self.create_button_image()
+        self.color = (200, 200, 200)
+        self.image = self.create_button_image()
+        return self.image
         # self.change_end_time = pg.time.get_ticks() + duration * 1000
 
     #     # Warning: it dos that the buttons will not arrive in secound time!

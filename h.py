@@ -27,7 +27,7 @@ class Button(pg.sprite.Sprite):
     def change_color_temporarily(self, new_color, duration=1):
         self.color = new_color
         self.image = self.create_button_image()
-        pg.time.set_timer(pg.USEREVENT + self.number, int(duration * 1000))
+        # pg.time.set_timer(pg.USEREVENT + self.number, int(duration * 1000))
 
     def reset_color(self):
         self.color = self.original_color

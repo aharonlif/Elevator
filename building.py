@@ -118,7 +118,7 @@ class Building(pg.sprite.Group):
         Args:
             floor (int, optional): The floor number of the button to change color. Defaults to 0.
         """
-        self.floors[floor].button.change_color_temporarily()
+        self.floors[floor].change_color_temporarily()
 
     def update(self):
         """

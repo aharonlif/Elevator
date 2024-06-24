@@ -26,6 +26,11 @@ class Floor(pg.sprite.Sprite):
         self.draw_button()
         self.font = pg.font.SysFont(None, int(self.button.text_size / 2))
 
+    def change_color_temporarily(self):
+        self.button.color =  (0, 255, 0)
+        self.button.image = self.button.create_button_image()
+        self.draw_button()
+
     def update_time_elevator(self, arrival_time=99):
         """
         Updates the display with the time until the elevator arrives.

@@ -69,8 +69,9 @@ class Elevator(pg.sprite.Sprite):
         """
         current_time = time.time()
         elapsed_time = current_time - self.movement_last_time
-        if elapsed_time >= 1:
-            self.arrival_time -= 1
+        # if elapsed_time >= 1:
+        #     print("elapsed time!!!!!!!!!!!!!")
+        self.arrival_time =int( elapsed_time)  #TODO need to fix only 2 numbers after the point
         floors_to_move = elapsed_time / self.floor_travel_time
         y_move = floors_to_move * settings.Floor.height
         self.movement_last_time = current_time
