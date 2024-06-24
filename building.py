@@ -111,14 +111,6 @@ class Building(pg.sprite.Group):
             self.floors[floor].an_elevator_that_arrives = nearest_elevator
             return True
 
-    def change_button_color(self, floor=0):
-        """
-        Changes the color of the button on the specified floor temporarily.
-        
-        Args:
-            floor (int, optional): The floor number of the button to change color. Defaults to 0.
-        """
-        self.floors[floor].change_color_temporarily()
 
     def update(self):
         """
@@ -128,7 +120,8 @@ class Building(pg.sprite.Group):
         if self.calls_to_the_elevator:
             if self.move_elevator(self.calls_to_the_elevator[0]):
                 self.calls_to_the_elevator.pop(0)
+
         for elv in self.elevators:
             if elv.update_location():
                 floor = elv.floor
-                self.floors[floor].update_time_elevator(elv.arrival_time)
+                self.floors[floor].update(elv.arrival_time)

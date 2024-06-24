@@ -52,8 +52,9 @@ class Manager:
         for build in self.buildings:
             for floor in build.floors:
                 if floor.button.check_click(mouse_pos):
-                    floor.change_color_temporarily()
                     build.move_elevator(floor.floor_number)
+                    floor.change_color_temporarily()
+                    return
 
     def update(self):
         """
@@ -61,7 +62,6 @@ class Manager:
         """
         for build in self.buildings:
             build.update()
-        # TODO: update Buttons
 
     def run(self):
         """
