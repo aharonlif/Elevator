@@ -39,21 +39,22 @@ class Floor(pg.sprite.Sprite):
     def change_color_temporarily(self):
         self.change_color((0, 255, 0), time.time())
 
-    def update(self, arrival_time=99):
+    def update(self, arrival_time):
         if self.time_chaneged_color:
             if time.time() - self.time_chaneged_color >= 0.08:
                 self.return_original_color()
-
         self.update_time_elevator(arrival_time)
 
 
-    def update_time_elevator(self, arrival_time=99):
+    def update_time_elevator(self, arrival_time):
         """
         Updates the display with the time until the elevator arrives.
         
         Args:
             arrival_time (int, optional): The time until the elevator arrives. Defaults to 99.
         """
+        # arrival_time = int(abs(self.floor - self.current_floor))/2
+        # self.arrival_time = arrival_time - (time.time() - self.movement_last_time)
         time_elevator = arrival_time
         # print(time_elevator)
         text_surface = self.font.render(str(time_elevator), True, (20, 200, 200))

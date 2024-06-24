@@ -58,7 +58,7 @@ class Elevator(pg.sprite.Sprite):
         """
         self.floor = floor
         self.movement_last_time = time.time()
-        self.arrival_time = int(abs(self.floor - self.current_floor) / 2)
+        self.arrival_time = int(abs(self.floor - self.current_floor))/2
         
     def calculate_position_to_move(self):
         """
@@ -98,7 +98,7 @@ class Elevator(pg.sprite.Sprite):
         """
         if not self.moving():
             return False
-        
+
         if self.arrived():
             if not self.made_a_sound:
                 self.arrived_sound.play()

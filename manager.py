@@ -1,6 +1,6 @@
 import pygame as pg
 import building
-from settings import Screen
+from settings import Screen, Floor
 
 class Manager:
     """
@@ -25,11 +25,11 @@ class Manager:
         pg.init()
         self.screen = pg.display.set_mode((Screen.width, Screen.height), pg.SRCALPHA)
         pg.display.set_caption("Building Floor")
-        self.buildings = [None] * buildings
+        self.buildings = [None] * len(buildings)
         self.group = pg.sprite.Group()
-        self.factory_of_buildings(floors, elevators)
+        self.factory_of_buildings(buildings)
 
-    def factory_of_buildings(self, floors, elevators):
+    def factory_of_buildings(self, buildings):
         """
         Creates and initializes buildings with the given number of floors and elevators.
         
@@ -37,9 +37,13 @@ class Manager:
             floors (int): Number of floors per building.
             elevators (int): Number of elevators per building.
         """
-        for build in range(len(self.buildings)):
-            current_building = building.Building(floors, elevators, building_number=build)
-            self.buildings[build] = current_building
+        for i, build in enumerate(buildings):
+            if i == 0:
+                x_position = 0
+            else:
+                x_position = self.buildings[i-1].x_position + Floor.width +Floor.height * (buildings[i-1]["elevators"])
+            current_building = building.Building(build, x_position)
+            self.buildings[i] = current_building
             self.group.add(current_building)
 
     def check_floor_click(self, mouse_pos):
