@@ -93,6 +93,14 @@ class Elevator(pg.sprite.Sprite):
         current_time = time.time()
         elapsed_time = current_time - self.movement_last_time
         return elapsed_time > 2
+   
+    def revision(self):
+        if self.arrival_time == 0 and self.move_to_floors:
+            self.current_floor = self.floor
+            self.floor = self.move_to_floors[0]["floor"]
+            self.arrival_time = self.move_to_floors[0]["arrival time"]
+            self.movement_last_time = time.time()
+            self.move_to_floors.pop(0)
 
     def update_location(self):
         """

@@ -56,7 +56,6 @@ class Floor(pg.sprite.Sprite):
         # arrival_time = int(abs(self.floor - self.current_floor))/2
         # self.arrival_time = arrival_time - (time.time() - self.movement_last_time)
         time_elevator = arrival_time
-        # print(time_elevator)
         text_surface = self.font.render(str(time_elevator), True, (20, 200, 200))
         text_rect = text_surface.get_rect(center=(self.width // 2 - self.button.size[0], self.height // 2))
         self.image.blit(text_surface, text_rect)

@@ -84,19 +84,11 @@ class Building(pg.sprite.Group):
         Returns:
             Elevator: The nearest available elevator.
         """
-        # try:
-        # time!!!
-        # t = None if not nearest_elevator.move_to_floors else nearest_elevator.move_to_floors[-1]["arrival time"]
-
-
+       
         nearest_elevator = min(
             (elevator for elevator in self.elevators ), 
             key=lambda elevator: abs(elevator.floor - floor)/2 + elevator.moving()*2 + 0 if not elevator.move_to_floors else int(elevator.move_to_floors[-1]["arrival time"]  ))
-        
-        # except Exception:
-        #     if floor not in self.calls_to_the_elevator:
-        #         self.calls_to_the_elevator.append(floor)
-        #     return
+        # moving function is not correct
         return nearest_elevator
 
     def move_elevator(self, floor):
@@ -109,12 +101,9 @@ class Building(pg.sprite.Group):
         Returns:
             bool: True if an elevator was moved, otherwise False.
         """
-        print
         nearest_elevator = self._find_nearest_elevator(floor)
-        # if nearest_elevator:
         nearest_elevator.move_to_floor(floor)
-        self.floors[floor].an_elevator_that_arrives = nearest_elevator # TODOneed to fix it becous the elevator updated by elevator class only when have more then 1 elv
-            # return True
+        # self.floors[floor].an_elevator_that_arrives = nearest_elevator # TODOneed to fix it becous the elevator updated by elevator class only when have more then 1 elv
 
 
     def update(self):
@@ -127,6 +116,7 @@ class Building(pg.sprite.Group):
         #         self.calls_to_the_elevator.pop(0)
 
         for elv in self.elevators:
+            elv.revision()                
             if elv.update_location():
                 elv.arrival_time = 2.5
                 floor = elv.floor
