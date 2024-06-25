@@ -39,6 +39,7 @@ class Elevator(pg.sprite.Sprite):
         self.movement_last_time = None
         self.arrival_time = 0
         self.y_position = bottomleft[1]  # Y position at start
+        self.move_to_floors = []
 
     def moving(self) -> bool:
         """
@@ -56,6 +57,10 @@ class Elevator(pg.sprite.Sprite):
         Args:
             floor (int): Target floor.
         """
+        if  self.movement_last_time:  # ?????? self.arrival_time or            delete arrival time becous it checked by sedond checkin. Movement need to check if it's None after that elev did came to the correct floor
+            arrival_time = self.arrival_time + 2 + abs(self.floor - floor)/2 if not self.move_to_floors else self.move_to_floors[-1]["arrival time"]
+            self.move_to_floors.append({"floor": floor, "arrival time": arrival_time})
+            return
         self.floor = floor
         self.movement_last_time = time.time()
         self.arrival_time = int(abs(self.floor - self.current_floor))/2
@@ -106,8 +111,18 @@ class Elevator(pg.sprite.Sprite):
                 self.arrival_time = 0
                 return True
             if self.passed_2_seconds():
-                self.current_floor = self.floor
+                self.movement_last_time = None
+
+                self.current_floor = self.floor #TODO: delete this line
                 self.made_a_sound = False
+                if self.move_to_floors:
+                    # print(self.move_to_floors[0])
+                    floor = self.move_to_floors[0]["floor"]
+                    self.arrival_time = self.move_to_floors[0]["arrival time"]
+                    self.move_to_floors.pop(0)
+                    # print(self.move_to_floors[0])
+
+                    self.move_to_floor(floor)
             return False
             
         y_position = self.calculate_position_to_move()
@@ -123,4 +138,4 @@ class Elevator(pg.sprite.Sprite):
         """
         floor = settings.Floor.height + settings.Line.thickness
         y_hight = settings.Screen.height - self.y_position
-        return (floor * self.floor) < y_hight if self.floor > self.current_floor else (floor * self.floor) > y_hight
+        return (floor * self.floor) < y_hight if self.floor > self.current_floor else (floor * self.floor) > y_hight #TODO: don't need to check. only return floor == current flor

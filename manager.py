@@ -88,15 +88,15 @@ class Manager:
                 #     button.reset_color()
             self.screen.fill((255, 255, 255)) 
             self.update()
-            self.draw(self.screen)
+            self.draw()
             pg.display.flip()
         pg.quit()
 
-    def draw(self, screen):
+    def draw(self):
         """
         Draws all sprites to the screen.
         
         Args:
             screen (pygame.Surface): The display surface.
         """
-        self.group.draw(screen)
+        self.group.draw(self.screen)
