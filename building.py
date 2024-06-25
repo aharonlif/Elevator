@@ -2,14 +2,13 @@ import pygame as pg
 from floor import Floor as flr
 from black_line import Line
 from elevator import Elevator as elv
-from settings import Screen
+import settings
 
 class Building(pg.sprite.Group):
     """
     Represents a building containing multiple floors and elevators.
     Manages the elevators and their movements.
     """
-    difference_building = flr.width * 2 + elv.width
 
     def __init__(self, build, x_position):
         """
@@ -25,27 +24,17 @@ class Building(pg.sprite.Group):
         self.floors = [None] * build["floors"]
         self.elevators = [None] * build["elevators"]
         self.x_position = x_position
-        # self.number = building_number
-        self.calculate_x_position()
         self.floors_factory()
         self.elevators_factory()
-        # self.calls_to_the_elevator = []
 
-    def calculate_x_position(self):
-        """
-        Calculates the x position of the building based on its number and the number of elevators.
-        """
-        # if self.number and not self.x_position:
-        #     plase_elvs = len(self.elevators) * elv.width + flr.width
-        #     self.x_position = (plase_elvs) * self.number
 
     def floors_factory(self):
         """
         Creates the floors for the building and adds them to the sprite group.
         Draws lines between the floors.
         """
-        y_position = Screen.height
-        line_y_position = Screen.height
+        y_position = settings.Screen.height
+        line_y_position = settings.Screen.height
         for i in range(len(self.floors)):
             self.floors[i] = flr(i, bottomleft=(self.x_position, y_position))
             self.add(self.floors[i])
@@ -69,7 +58,7 @@ class Building(pg.sprite.Group):
         """
         for i in range(len(self.elevators)):
             x_position = self.x_position + flr.width + (i * elv.width)
-            y_position = Screen.height
+            y_position = settings.Screen.height
             elevator = elv(bottomleft=(x_position, y_position))
             self.add(elevator)
             self.elevators[i] = elevator
@@ -103,7 +92,7 @@ class Building(pg.sprite.Group):
         """
         nearest_elevator = self._find_nearest_elevator(floor)
         nearest_elevator.move_to_floor(floor)
-        # self.floors[floor].an_elevator_that_arrives = nearest_elevator # TODOneed to fix it becous the elevator updated by elevator class only when have more then 1 elv
+        self.floors[floor].change_color(settings.BUTTON_COLOR_TEMPORARILY)
 
 
     def update(self):
@@ -111,13 +100,11 @@ class Building(pg.sprite.Group):
         Updates the state of the building, moving elevators as needed.
         Processes any pending elevator calls.
         """
-        # if self.calls_to_the_elevator:
-        #     if self.move_elevator(self.calls_to_the_elevator[0]):
-        #         self.calls_to_the_elevator.pop(0)
-
         for elv in self.elevators:
-            elv.revision()                
+            elv.update()
+            if not elv.moving() and self.floors[elv.floor].button.color != settings.BUTTON_COLOR:
+                self.floors[elv.floor].change_color(settings.BUTTON_COLOR)            
             if elv.update_location():
                 elv.arrival_time = 2.5
                 floor = elv.floor
-                self.floors[floor].update(elv.arrival_time)
+                self.floors[floor].update_time_elevator(elv.arrival_time)

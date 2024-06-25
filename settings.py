@@ -11,3 +11,6 @@ class Floor:
 class Line:
     color = (0, 0, 0)
     thickness = 1/20 * Floor.height
+
+BUTTON_COLOR = (255, 253, 208) 
+BUTTON_COLOR_TEMPORARILY = (0, 255, 0)

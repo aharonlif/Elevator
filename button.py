@@ -1,12 +1,12 @@
 import pygame as pg
 
-from settings import Floor
+import settings
 
 
 class Button(pg.sprite.Sprite):
-    radius = Floor.width/4
+    radius = settings.Floor.width/4
     size = (radius, radius)
-    color = (255, 253, 208) 
+    color = settings.BUTTON_COLOR
     text_color = (0, 0, 0)
     text_size = int(radius*1)
     pg.font.init()

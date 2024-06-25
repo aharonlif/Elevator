@@ -57,7 +57,6 @@ class Manager:
             for floor in build.floors:
                 if floor.button.check_click(mouse_pos):
                     build.move_elevator(floor.floor_number)
-                    floor.change_color_temporarily()
                     return
 
     def update(self):
