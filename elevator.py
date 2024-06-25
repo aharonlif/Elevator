@@ -61,10 +61,15 @@ class Elevator(pg.sprite.Sprite):
             arrival_time = self.arrival_time + 2 + abs(self.floor - floor)/2 if not self.move_to_floors else self.move_to_floors[-1]["arrival time"]
             self.move_to_floors.append({"floor": floor, "arrival time": arrival_time})
             return
+        if self.current_floor != self.floor:
+            raise (TypeError("The current floor of elevator did not update"))
         self.floor = floor
         self.movement_last_time = time.time()
         self.arrival_time = int(abs(self.floor - self.current_floor))/2
         
+    # def calculate_arrival_time(self):
+
+
     def calculate_position_to_move(self):
         """
         Calculates the new position of the elevator based on the elapsed time.
@@ -75,20 +80,21 @@ class Elevator(pg.sprite.Sprite):
         current_time = time.time()
         elapsed_time = current_time - self.movement_last_time
 
-        self.arrival_time =int( elapsed_time)  #TODO need to fix only 2 numbers after the point
+        self.arrival_time -=int( elapsed_time*10)/10  #TODO need to fix only 2 numbers after the point
         floors_to_move = elapsed_time / self.floor_travel_time
         y_move = floors_to_move * settings.FLOOR_HIGHT
         self.movement_last_time = current_time
         self.y_position += y_move if self.current_floor > self.floor else -y_move
         return self.y_position
 
-    def passed_2_seconds(self):
+    def free(self):
         """
         Checks if 2 seconds have passed since the last movement started.
 
         Returns:
             bool: True if 2 seconds have passed, False otherwise.
         """
+        #TODO arrival time
         current_time = time.time()
         elapsed_time = current_time - self.movement_last_time
         return elapsed_time > 2
@@ -117,18 +123,16 @@ class Elevator(pg.sprite.Sprite):
                 self.made_a_sound = True
                 self.arrival_time = 0
                 return True
-            if self.passed_2_seconds():
+            
+            if self.free():
                 self.movement_last_time = None
-
                 self.current_floor = self.floor #TODO: delete this line
                 self.made_a_sound = False
+
                 if self.move_to_floors:
-                    # print(self.move_to_floors[0])
                     floor = self.move_to_floors[0]["floor"]
                     self.arrival_time = self.move_to_floors[0]["arrival time"]
                     self.move_to_floors.pop(0)
-                    # print(self.move_to_floors[0])
-
                     self.move_to_floor(floor)
             return False
             

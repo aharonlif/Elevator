@@ -57,8 +57,8 @@ class Manager:
         for build in self.buildings:
             for floor in build.floors:
                 if floor.button.check_click(mouse_pos):
-                    # TODO
-                    build.move_elevator(floor.floor_number)
+                    # TODO sec = floor - current_foor
+                    build.cold_to_elevator(floor.floor_number)
                     return
 
     def update(self):

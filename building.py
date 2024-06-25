@@ -80,7 +80,7 @@ class Building(pg.sprite.Group):
         # moving function is not correct
         return nearest_elevator
 
-    def move_elevator(self, floor):
+    def cold_to_elevator(self, floor):
         """
         Moves the nearest available elevator to the specified floor.
         

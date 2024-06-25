@@ -3,7 +3,7 @@ import pygame as pg
 import settings
 
 
-class Button(pg.sprite.Sprite):
+class Button():
     radius = settings.FLOOR_WIDTH/4
     size = (radius, radius)
     color = settings.BUTTON_COLOR
@@ -14,7 +14,7 @@ class Button(pg.sprite.Sprite):
 
     def __init__(self, number):
 
-        super().__init__()
+        # super().__init__()
         self.color = self.color  # Cream color
         self.number = number
         self.font = pg.font.SysFont(None, self.text_size)
