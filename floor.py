@@ -35,7 +35,7 @@ class Floor(pg.sprite.Sprite):
 
     def an_elevator_was_called(self, arrival_time):
         self.change_color(settings.BUTTON_COLOR_TEMPORARILY)
-        self.arrival_time = arrival_time
+        # self.arrival_time = arrival_time
         
 
     def update_time_elevator(self, arrival_time):
