@@ -1,13 +1,13 @@
 import pygame as pg
 from button import Button
-from settings import Floor as f
+import settings
 import time
 
 class Floor(pg.sprite.Sprite):
     """
     Represents a floor in a building with a button for elevator calls.
     """
-    width, height = f.width, f.height
+    width, height = settings.Floor.width, settings.Floor.height
 
     def __init__(self, floor_number, bottomleft):
         """
@@ -22,6 +22,7 @@ class Floor(pg.sprite.Sprite):
         self.image = pg.transform.scale(self.image, (self.width, self.height))
         self.rect = self.image.get_rect(bottomleft=bottomleft)
         self.floor_number = floor_number
+        self.arrival_time = 0
         self.button = Button(self.floor_number)
         self.button.rect.center = self.rect.center  # Set the button's position relative to the floor
         self.draw_button()
@@ -32,6 +33,9 @@ class Floor(pg.sprite.Sprite):
         self.button.image = self.button.create_button_image()
         self.draw_button()
 
+    def an_elevator_was_called(self, arrival_time):
+        self.change_color(settings.BUTTON_COLOR_TEMPORARILY)
+        self.arritval_time = arrival_time
 
     def update_time_elevator(self, arrival_time):
         """
@@ -42,8 +46,8 @@ class Floor(pg.sprite.Sprite):
         """
         # arrival_time = int(abs(self.floor - self.current_floor))/2
         # self.arrival_time = arrival_time - (time.time() - self.movement_last_time)
-        time_elevator = arrival_time
-        text_surface = self.font.render(str(time_elevator), True, (20, 200, 200))
+        #TODO update it
+        text_surface = self.font.render(str(self.arritval_time), True, (20, 200, 200))
         text_rect = text_surface.get_rect(center=(self.width // 2 - self.button.size[0], self.height // 2))
         self.image.blit(text_surface, text_rect)
 

@@ -92,7 +92,7 @@ class Building(pg.sprite.Group):
         """
         nearest_elevator = self._find_nearest_elevator(floor)
         nearest_elevator.move_to_floor(floor)
-        self.floors[floor].change_color(settings.BUTTON_COLOR_TEMPORARILY)
+        self.floors[floor].an_elevator_was_called(nearest_elevator.arrival_time)
 
 
     def update(self):
