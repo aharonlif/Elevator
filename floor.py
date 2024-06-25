@@ -7,7 +7,7 @@ class Floor(pg.sprite.Sprite):
     """
     Represents a floor in a building with a button for elevator calls.
     """
-    width, height = settings.Floor.width, settings.Floor.height
+    width, height = settings.FLOOR_WIDTH, settings.FLOOR_HIGHT
 
     def __init__(self, floor_number, bottomleft):
         """
@@ -47,7 +47,7 @@ class Floor(pg.sprite.Sprite):
         # arrival_time = int(abs(self.floor - self.current_floor))/2
         # self.arrival_time = arrival_time - (time.time() - self.movement_last_time)
         #TODO update it
-        text_surface = self.font.render(str(self.arritval_time), True, (20, 200, 200))
+        text_surface = self.font.render(str(arrival_time), True, (20, 200, 200))
         text_rect = text_surface.get_rect(center=(self.width // 2 - self.button.size[0], self.height // 2))
         self.image.blit(text_surface, text_rect)
 

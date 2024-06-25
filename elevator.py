@@ -17,7 +17,7 @@ class Elevator(pg.sprite.Sprite):
         arrival_time (int): Time until the elevator arrives at the target floor.
         y_position (float): Y position of the elevator.
     """
-    width, height = settings.Floor.height, settings.Floor.height
+    width, height = settings.FLOOR_HIGHT, settings.FLOOR_HIGHT
     pg.mixer.init()
     arrived_sound = pg.mixer.Sound("help_files/ding.mp3")
     floor_travel_time = 0.5 
@@ -78,7 +78,7 @@ class Elevator(pg.sprite.Sprite):
         #     print("elapsed time!!!!!!!!!!!!!")
         self.arrival_time =int( elapsed_time)  #TODO need to fix only 2 numbers after the point
         floors_to_move = elapsed_time / self.floor_travel_time
-        y_move = floors_to_move * settings.Floor.height
+        y_move = floors_to_move * settings.FLOOR_HIGHT
         self.movement_last_time = current_time
         self.y_position += y_move if self.current_floor > self.floor else -y_move
         return self.y_position
@@ -144,6 +144,6 @@ class Elevator(pg.sprite.Sprite):
         Returns:
             bool: True if the elevator has arrived, False otherwise.
         """
-        floor = settings.Floor.height + settings.Line.thickness
-        y_hight = settings.Screen.height - self.y_position
+        floor = settings.FLOOR_HIGHT + settings.LINE_THICKNESS
+        y_hight = settings.SCREEN_HIGHT - self.y_position
         return (floor * self.floor) < y_hight if self.floor > self.current_floor else (floor * self.floor) > y_hight #TODO: don't need to check. only return floor == current flor

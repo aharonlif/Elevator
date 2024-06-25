@@ -33,8 +33,8 @@ class Building(pg.sprite.Group):
         Creates the floors for the building and adds them to the sprite group.
         Draws lines between the floors.
         """
-        y_position = settings.Screen.height
-        line_y_position = settings.Screen.height
+        y_position = settings.SCREEN_HIGHT
+        line_y_position = settings.SCREEN_HIGHT
         for i in range(len(self.floors)):
             self.floors[i] = flr(i, bottomleft=(self.x_position, y_position))
             self.add(self.floors[i])
@@ -58,7 +58,7 @@ class Building(pg.sprite.Group):
         """
         for i in range(len(self.elevators)):
             x_position = self.x_position + flr.width + (i * elv.width)
-            y_position = settings.Screen.height
+            y_position = settings.SCREEN_HIGHT
             elevator = elv(bottomleft=(x_position, y_position))
             self.add(elevator)
             self.elevators[i] = elevator
@@ -102,9 +102,9 @@ class Building(pg.sprite.Group):
         """
         for elv in self.elevators:
             elv.update()
-            if not elv.moving() and self.floors[elv.floor].button.color != settings.BUTTON_COLOR:
+            if not elv.moving() and self.floors[elv.floor].button.color != settings.BUTTON_COLOR: # moving function is not correct
                 self.floors[elv.floor].change_color(settings.BUTTON_COLOR)            
             if elv.update_location():
-                elv.arrival_time = 2.5
+                # elv.arrival_time = 2.5
                 floor = elv.floor
                 self.floors[floor].update_time_elevator(elv.arrival_time)

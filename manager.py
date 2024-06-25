@@ -1,6 +1,7 @@
 import pygame as pg
+
 import building
-from settings import Screen, Floor
+import settings
 
 class Manager:
     """
@@ -23,7 +24,7 @@ class Manager:
             elevators (int): Number of elevators per building.
         """
         pg.init()
-        self.screen = pg.display.set_mode((Screen.width, Screen.height), pg.SRCALPHA)
+        self.screen = pg.display.set_mode((settings.SCREEN_WIDTH, settings.SCREEN_HIGHT), pg.SRCALPHA)
         pg.display.set_caption("Building Floor")
         self.buildings = [None] * len(buildings)
         self.group = pg.sprite.Group()
@@ -41,7 +42,7 @@ class Manager:
             if i == 0:
                 x_position = 0
             else:
-                x_position = self.buildings[i-1].x_position + Floor.width +Floor.height * (buildings[i-1]["elevators"])
+                x_position = self.buildings[i-1].x_position + settings.FLOOR_WIDTH + settings.FLOOR_HIGHT * (buildings[i-1]["elevators"])
             current_building = building.Building(build, x_position)
             self.buildings[i] = current_building
             self.group.add(current_building)

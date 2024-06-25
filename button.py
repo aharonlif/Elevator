@@ -4,7 +4,7 @@ import settings
 
 
 class Button(pg.sprite.Sprite):
-    radius = settings.Floor.width/4
+    radius = settings.FLOOR_WIDTH/4
     size = (radius, radius)
     color = settings.BUTTON_COLOR
     text_color = (0, 0, 0)

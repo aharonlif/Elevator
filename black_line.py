@@ -11,8 +11,8 @@ class Line(pg.sprite.Sprite):
         image (pg.Surface): Surface for the line sprite.
         rect (pg.Rect): Rectangle defining the dimensions and position of the line.
     """
-    color = settings.Line.color
-    thickness = settings.Line.thickness
+    color = settings.LINE_COLOR
+    thickness = settings.LINE_THICKNESS
     
     def __init__(self, bottomleft):
         """
@@ -22,6 +22,6 @@ class Line(pg.sprite.Sprite):
             bottomleft (tuple): Bottom-left position of the line.
         """
         super().__init__()
-        self.image = pg.Surface((settings.Floor.width, self.thickness))
+        self.image = pg.Surface((settings.FLOOR_WIDTH, self.thickness))
         # self.image.fill(self.color)  # Ensure the line is filled with the specified color
         self.rect = self.image.get_rect(bottomleft=bottomleft)
