@@ -57,6 +57,7 @@ class Manager:
         for build in self.buildings:
             for floor in build.floors:
                 if floor.button.check_click(mouse_pos):
+                    # TODO
                     build.move_elevator(floor.floor_number)
                     return
 
@@ -64,6 +65,7 @@ class Manager:
         """
         Updates the state of all buildings.
         """
+        # TODO
         for build in self.buildings:
             build.update()
 
