@@ -10,9 +10,8 @@ def main():
                  {"floors": 3, "elevators" : 1},
                  {"floors": 4, "elevators" : 2},
                  {"floors": 6, "elevators" : 3}]
-    floors = 6
-    elevators = 3
-    manager = Manager(buildings=buildings, floors=floors, elevators=elevators)
+
+    manager = Manager(buildings)
     manager.run()
 
 if __name__ == "__main__":

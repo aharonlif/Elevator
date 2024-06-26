@@ -14,7 +14,7 @@ class Manager:
         group (pygame.sprite.Group): Group of all sprites.
     """
 
-    def __init__(self, buildings=1, floors=5, elevators=3) -> None:
+    def __init__(self, buildings) -> None:
         """
         Initializes the Manager with the given number of buildings, floors, and elevators.
         
@@ -57,7 +57,8 @@ class Manager:
         for build in self.buildings:
             for floor in build.floors:
                 if floor.button.check_click(mouse_pos):
-                    build.cold_to_elevator(floor.floor_number)
+                    if not any(floor.floor_number == elev.floor or any(floor.floor_number == d.get("floor") for d in elev.move_to_floors) for elev in build.elevators):
+                        build.cold_to_elevator(floor.floor_number)
                     return
 
     def update(self):
@@ -81,7 +82,7 @@ class Manager:
                         running = False
                 elif event.type == pg.MOUSEBUTTONDOWN:
                     self.check_floor_click(event.pos)
-                    
+
             self.screen.fill((255, 255, 255)) 
             self.update()
             self.draw()
