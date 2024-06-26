@@ -38,17 +38,7 @@ class Floor(pg.sprite.Sprite):
         # self.arrival_time = arrival_time
         self.update_time_elevator(arrival_time)
         
-    def time_draw(self, arrival_time):
-        size = settings.FLOOR_WIDTH/4
-        surface_time = pg.Surface((size, size), pg.SRCALPHA)
-        center = size//2
-        pg.draw.circle(surface_time, (250, 200, 10), (center, center), center)
-        text_surface = self.font.render(str(arrival_time), True, (20, 200, 200))
-        text_rect = text_surface.get_rect(center=(center, center))
-        surface_time.blit(text_surface, text_rect)
-        self.image.blit(surface_time, text_rect)
-
-        return surface_time
+        
 
     def update_time_elevator(self, arrival_time):
         """
@@ -64,7 +54,17 @@ class Floor(pg.sprite.Sprite):
         # text_surface = self.font.render(str(arrival_time),  False, (20, 200, 200))
         # text_rect = text_surface.get_rect(center=(self.width // 2 - self.button.size[0], self.height // 2))
         # self.image.blit(text_surface, text_rect)
-        self.time_draw(arrival_time)
+        size = settings.FLOOR_WIDTH/4
+        surface_time = pg.Surface((size, size), pg.SRCALPHA)
+        center = size//2
+        pg.draw.circle(surface_time, (250, 200, 250), (center, center), center)
+        text_surface = self.font.render(str(arrival_time), True, (20, 10, 100))
+        text_rect = text_surface.get_rect(center=(center, center))
+        surface_time.blit(text_surface, text_rect)
+        self.image.blit(surface_time, text_rect)
+
+        return surface_time
+    
 
     def draw_button(self):
         """

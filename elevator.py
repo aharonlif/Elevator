@@ -96,16 +96,31 @@ class Elevator(pg.sprite.Sprite):
         """
         #TODO arrival time
         current_time = time.time()
-        elapsed_time = current_time - self.movement_last_time
+        try: 
+            elapsed_time = current_time - self.movement_last_time
+        except:
+            return True
         return elapsed_time > 2
    
     def update(self):
-        if self.arrival_time == 0 and self.move_to_floors:
-            self.current_floor = self.floor
-            self.floor = self.move_to_floors[0]["floor"]
-            self.arrival_time = self.move_to_floors[0]["arrival time"]
-            self.movement_last_time = time.time()
-            self.move_to_floors.pop(0)
+        # if self.arrival_time == 0 and self.move_to_floors:
+        #     self.current_floor = self.floor
+        #     self.floor = self.move_to_floors[0]["floor"]
+        #     self.arrival_time = self.move_to_floors[0]["arrival time"]
+        #     self.movement_last_time = time.time()
+        #     self.move_to_floors.pop(0)
+                    
+        if self.free():
+            self.movement_last_time = None
+            # self.current_floor = self.floor #TODO: delete this line
+            self.made_a_sound = False
+
+            if self.move_to_floors:
+                floor = self.move_to_floors[0]["floor"]
+                self.arrival_time = self.move_to_floors[0]["arrival time"]
+                self.move_to_floors.pop(0)
+                self.move_to_floor(floor)
+        return False
 
     def update_location(self):
         """
@@ -122,19 +137,10 @@ class Elevator(pg.sprite.Sprite):
                 self.arrived_sound.play()
                 self.made_a_sound = True
                 self.arrival_time = 0
-                return True
-            
-            if self.free():
-                self.movement_last_time = None
-                self.current_floor = self.floor #TODO: delete this line
-                self.made_a_sound = False
+                self.current_floor = self.floor
 
-                if self.move_to_floors:
-                    floor = self.move_to_floors[0]["floor"]
-                    self.arrival_time = self.move_to_floors[0]["arrival time"]
-                    self.move_to_floors.pop(0)
-                    self.move_to_floor(floor)
-            return False
+                return True
+
             
         y_position = self.calculate_position_to_move()
         self.rect.bottomleft = (self.rect.x, y_position)
@@ -149,4 +155,4 @@ class Elevator(pg.sprite.Sprite):
         """
         floor = settings.FLOOR_HIGHT + settings.LINE_THICKNESS
         y_hight = settings.SCREEN_HIGHT - self.y_position
-        return (floor * self.floor) < y_hight if self.floor > self.current_floor else (floor * self.floor) > y_hight #TODO: don't need to check. only return floor == current flor
+        return (floor * self.floor) <= y_hight if self.floor > self.current_floor else (floor * self.floor) >= y_hight #TODO: don't need to check. only return floor == current flor
