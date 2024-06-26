@@ -76,7 +76,8 @@ class Building(pg.sprite.Group):
        
         nearest_elevator = min(
             (elevator for elevator in self.elevators ), 
-            key=lambda elevator: abs(elevator.floor - floor)/2 + elevator.moving()*2 + 0 if not elevator.move_to_floors else int(elevator.move_to_floors[-1]["arrival time"]  ))
+            key=lambda elevator: abs(elevator.floor - floor)/2 + elevator.moving()*2 + 0 if not elevator.move_to_floors else int(elevator.move_to_floors[-1]["arrival time"] + 2 ))
+        
         # moving function is not correct
         return nearest_elevator
 
@@ -102,14 +103,12 @@ class Building(pg.sprite.Group):
         """
         for elv in self.elevators:
             elv.update()
-            if not elv.moving() and self.floors[elv.floor].button.color != settings.BUTTON_COLOR: # moving function is not correct
+            if not elv.moving() and self.floors[elv.floor].button.color == settings.BUTTON_COLOR_TEMPORARILY: # moving function is not correct
                 self.floors[elv.floor].change_color(settings.BUTTON_COLOR)            
-            
-        # for floor in self.floors:
-        #     floor.update 
+
             if elv.update_location():
                 floor = elv.floor
                 self.floors[floor].update_time_elevator(elv.arrival_time)
             if elv.move_to_floors:
-                for i in elv.move_to_floors:
-                    self.floors[i["floor"]].update_time_elevator(i["arrival time"])
+                for floor in elv.move_to_floors:
+                    self.floors[floor["floor"]].update_time_elevator(floor["arrival time"])

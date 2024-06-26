@@ -22,7 +22,6 @@ class Floor(pg.sprite.Sprite):
         self.image = pg.transform.scale(self.image, (self.width, self.height))
         self.rect = self.image.get_rect(bottomleft=bottomleft)
         self.floor_number = floor_number
-        # self.arrival_time = 0
         self.button = Button(self.floor_number)
         self.button.rect.center = self.rect.center  # Set the button's position relative to the floor
         self.font = pg.font.SysFont(None, int(self.button.text_size / 2))
@@ -36,7 +35,6 @@ class Floor(pg.sprite.Sprite):
 
     def an_elevator_was_called(self, arrival_time):
         self.change_color(settings.BUTTON_COLOR_TEMPORARILY)
-        # self.arrival_time = arrival_time
         self.update_time_elevator(arrival_time)
         
         

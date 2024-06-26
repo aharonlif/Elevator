@@ -43,12 +43,7 @@ class Elevator(pg.sprite.Sprite):
         self.move_to_floors = []
 
     def moving(self) -> bool:
-        """
-        Checks if the elevator is currently moving.
-
-        Returns:
-            bool: True if the elevator is moving, False otherwise.
-        """
+        
         return self.floor != self.current_floor
 
     def move_to_floor(self, floor):
@@ -59,21 +54,23 @@ class Elevator(pg.sprite.Sprite):
             floor (int): Target floor.
         """
         if  not self.free():
-            arrival_time = self.arrival_time + 2 + abs(self.floor - floor)/2 if not self.move_to_floors else self.move_to_floors[-1]["arrival time"]
+            arrival_time = self.arrival_time + 2 + abs(self.floor - floor)/2 if not self.move_to_floors else self.move_to_floors[-1]["arrival time"]+2
             self.move_to_floors.append({"floor": floor, "arrival time": arrival_time})
             return
         if self.moving():
-            raise (TypeError("The current floor of elevator did not update"))
+            raise (TypeError("Bug in the free function"))
         self.floor = floor
         self.movement_last_time = time.time()
         self.arrival_time = int(abs(self.floor - self.current_floor))/2
 
         
-    def calculate_arrival_time(self, elapsed_time):
-        # self.last_drawn_time += elapsed_time
-        # # if self.last_drawn_time >= 0.1:
-        # self.last_drawn_time -= 0.1
+    def calculate_arrival_time(self):
+        
+        current_time = time.time()
+        elapsed_time = current_time - self.movement_last_time
         self.arrival_time -= elapsed_time
+        self.movement_last_time = current_time
+        return elapsed_time
 
     def calculate_position_to_move(self):
         """
@@ -82,13 +79,9 @@ class Elevator(pg.sprite.Sprite):
         Returns:
             float: New Y position of the elevator.
         """
-        current_time = time.time()
-        elapsed_time = current_time - self.movement_last_time
-        self.calculate_arrival_time( elapsed_time)
-
+        elapsed_time = self.calculate_arrival_time()
         floors_to_move = elapsed_time / self.floor_travel_time
         y_move = floors_to_move * settings.FLOOR_HIGHT
-        self.movement_last_time = current_time
         self.y_position += y_move if self.current_floor > self.floor else -y_move
         return self.y_position
 
@@ -115,7 +108,6 @@ class Elevator(pg.sprite.Sprite):
                 self.arrival_time = self.move_to_floors[0]["arrival time"]
                 self.move_to_floors.pop(0)
                 self.move_to_floor(floor)
-        return False
 
     def update_location(self):
         """
@@ -125,6 +117,10 @@ class Elevator(pg.sprite.Sprite):
             bool: True if the elevator is moving, False otherwise.
         """
         if not self.moving():
+            #TODO if self.free():
+            #     return False
+            # self.calculate_arrival_time()
+            # print(self.arrival_time)
             return False
 
         if self.arrived():
@@ -148,4 +144,4 @@ class Elevator(pg.sprite.Sprite):
         """
         floor = settings.FLOOR_HIGHT + settings.LINE_THICKNESS
         y_hight = settings.SCREEN_HIGHT - self.y_position
-        return (floor * self.floor) <= y_hight if self.floor > self.current_floor else (floor * self.floor) >= y_hight #TODO: don't need to check. only return floor == current flor
+        return (floor * self.floor) <= y_hight if self.floor > self.current_floor else (floor * self.floor) >= y_hight
