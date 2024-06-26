@@ -37,6 +37,7 @@ class Elevator(pg.sprite.Sprite):
         self.floor = 0
         self.current_floor = 0
         self.movement_last_time = None
+        self.last_drawn_time = 0
         self.arrival_time = 0
         self.y_position = bottomleft[1]  # Y position at start
         self.move_to_floors = []
@@ -61,14 +62,18 @@ class Elevator(pg.sprite.Sprite):
             arrival_time = self.arrival_time + 2 + abs(self.floor - floor)/2 if not self.move_to_floors else self.move_to_floors[-1]["arrival time"]
             self.move_to_floors.append({"floor": floor, "arrival time": arrival_time})
             return
-        if self.current_floor != self.floor:
+        if self.moving():
             raise (TypeError("The current floor of elevator did not update"))
         self.floor = floor
         self.movement_last_time = time.time()
         self.arrival_time = int(abs(self.floor - self.current_floor))/2
-        
-    # def calculate_arrival_time(self):
 
+        
+    def calculate_arrival_time(self, elapsed_time):
+        # self.last_drawn_time += elapsed_time
+        # # if self.last_drawn_time >= 0.1:
+        # self.last_drawn_time -= 0.1
+        self.arrival_time -= elapsed_time
 
     def calculate_position_to_move(self):
         """
@@ -79,8 +84,8 @@ class Elevator(pg.sprite.Sprite):
         """
         current_time = time.time()
         elapsed_time = current_time - self.movement_last_time
+        self.calculate_arrival_time( elapsed_time)
 
-        self.arrival_time -=int( elapsed_time*100)/100  #TODO need to fix only 2 numbers after the point
         floors_to_move = elapsed_time / self.floor_travel_time
         y_move = floors_to_move * settings.FLOOR_HIGHT
         self.movement_last_time = current_time
@@ -128,14 +133,12 @@ class Elevator(pg.sprite.Sprite):
                 self.made_a_sound = True
                 self.arrival_time = 0
                 self.current_floor = self.floor
-
                 return True
 
-            
         y_position = self.calculate_position_to_move()
         self.rect.bottomleft = (self.rect.x, y_position)
         return True
-
+    # def update_time():
     def arrived(self):
         """
         Checks if the elevator has arrived at the target floor.

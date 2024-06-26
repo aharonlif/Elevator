@@ -25,8 +25,9 @@ class Floor(pg.sprite.Sprite):
         # self.arrival_time = 0
         self.button = Button(self.floor_number)
         self.button.rect.center = self.rect.center  # Set the button's position relative to the floor
-        self.draw_button()
         self.font = pg.font.SysFont(None, int(self.button.text_size / 2))
+        self.draw_button()
+        self.update_time_elevator()
     
     def change_color(self, color):
         self.button.color =  color
@@ -40,30 +41,22 @@ class Floor(pg.sprite.Sprite):
         
         
 
-    def update_time_elevator(self, arrival_time):
+    def update_time_elevator(self, arrival_time=0):
         """
         Updates the display with the time until the elevator arrives.
         
         Args:
             arrival_time (int, optional): The time until the elevator arrives. Defaults to 99.
         """
-        # arrival_time = int(abs(self.floor - self.current_floor))/2
-        # self.arrival_time = arrival_time - (time.time() - self.movement_last_time)
-        #TODO update it
-        
-        # text_surface = self.font.render(str(arrival_time),  False, (20, 200, 200))
-        # text_rect = text_surface.get_rect(center=(self.width // 2 - self.button.size[0], self.height // 2))
-        # self.image.blit(text_surface, text_rect)
-        size = settings.FLOOR_WIDTH/4
+        size = settings.FLOOR_WIDTH/6
         surface_time = pg.Surface((size, size), pg.SRCALPHA)
         center = size//2
-        pg.draw.circle(surface_time, (250, 200, 250), (center, center), center)
-        text_surface = self.font.render(str(arrival_time), True, (20, 10, 100))
+        pg.draw.rect(surface_time, (250, 200, 250), (0, 0, size, size))
+        text_surface = self.font.render(f"{arrival_time:.1f}", True, (20, 10, 100))
         text_rect = text_surface.get_rect(center=(center, center))
-        surface_time.blit(text_surface, text_rect)
+        if arrival_time > 0:
+            surface_time.blit(text_surface, text_rect)
         self.image.blit(surface_time, text_rect)
-
-        return surface_time
     
 
     def draw_button(self):
