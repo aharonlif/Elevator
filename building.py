@@ -105,6 +105,5 @@ class Building(pg.sprite.Group):
             if not elv.moving() and self.floors[elv.floor].button.color != settings.BUTTON_COLOR: # moving function is not correct
                 self.floors[elv.floor].change_color(settings.BUTTON_COLOR)            
             if elv.update_location():
-                # elv.arrival_time = 2.5
                 floor = elv.floor
                 self.floors[floor].update_time_elevator(elv.arrival_time)

@@ -57,7 +57,6 @@ class Manager:
         for build in self.buildings:
             for floor in build.floors:
                 if floor.button.check_click(mouse_pos):
-                    # TODO sec = floor - current_foor
                     build.cold_to_elevator(floor.floor_number)
                     return
 
@@ -65,7 +64,6 @@ class Manager:
         """
         Updates the state of all buildings.
         """
-        # TODO
         for build in self.buildings:
             build.update()
 
@@ -81,13 +79,9 @@ class Manager:
                 elif event.type == pg.KEYDOWN:
                     if event.key == pg.K_q:
                         running = False
-                    if event.key == pg.K_a:
-                        print("   in manager: if evenet.key == pg.k_a:                self.buildings[0].floors[0].change_color_temporarily()")
-                        self.buildings[0].floors[0].change_color_temporarily()
                 elif event.type == pg.MOUSEBUTTONDOWN:
                     self.check_floor_click(event.pos)
-                # elif event.type == pg.USEREVENT + 1:
-                #     button.reset_color()
+                    
             self.screen.fill((255, 255, 255)) 
             self.update()
             self.draw()
