@@ -1,4 +1,5 @@
 import pygame as pg
+
 from floor import Floor as flr
 from black_line import Line
 from elevator import Elevator as elv
@@ -80,13 +81,9 @@ class Building(pg.sprite.Group):
             ) else elevator.move_to_floors[-1]["arrival time"] + 2 + abs(elevator.move_to_floors[-1]["floor"] - floor)/2
                 )
         
-        # moving function is not correct
         return nearest_elevator
 
-            # key=lambda elevator: abs(elevator.floor - floor)/2 + elevator.moving()*2 + 0 if not elevator.move_to_floors else int(
-            #     elevator.move_to_floors[-1]["arrival time"] + 2 
-                
-            #     )
+
     def cold_to_elevator(self, floor):
         """
         Moves the nearest available elevator to the specified floor.
@@ -109,7 +106,7 @@ class Building(pg.sprite.Group):
         """
         for elv in self.elevators:
             elv.update()
-            if not elv.moving() and self.floors[elv.floor].button.color == settings.BUTTON_COLOR_TEMPORARILY: # moving function is not correct
+            if not elv.moving() and self.floors[elv.floor].button.color == settings.BUTTON_COLOR_TEMPORARILY:
                 self.floors[elv.floor].change_color(settings.BUTTON_COLOR)            
 
             if not elv.free:

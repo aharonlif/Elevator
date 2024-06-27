@@ -1,5 +1,6 @@
 import pygame as pg
 import time
+
 import settings
 
 class Elevator(pg.sprite.Sprite):
@@ -97,17 +98,7 @@ class Elevator(pg.sprite.Sprite):
 
     def free(self):
         return self.free
-    #     """
-    #     Checks if 2 seconds have passed since the last movement started.
 
-    #     Returns:
-    #         bool: True if 2 seconds have passed, False otherwise.
-    #     """
-    #     if not self.movement_last_time:
-    #         return True
-    #     current_time = time.time()
-    #     elapsed_time = current_time - self.movement_last_time
-    #     return elapsed_time > 2
    
     def update(self):                    
         if self.free:
@@ -120,7 +111,6 @@ class Elevator(pg.sprite.Sprite):
                 self.arrival_time = self.move_to_floors[0]["arrival time"]
                 self.move_to_floors.pop(0)
                 self.move_to_floor(floor)
-                print(9999)
             else:
                 return
         self.update_location()
@@ -136,7 +126,6 @@ class Elevator(pg.sprite.Sprite):
             if self.free:
                 return False
             self.calculate_arrival_time()
-            # print(self.arrival_time)
             return False
 
         if self.arrived():
@@ -150,7 +139,7 @@ class Elevator(pg.sprite.Sprite):
         y_position = self.calculate_position_to_move()
         self.rect.bottomleft = (self.rect.x, y_position)
         return True
-    # def update_time():
+
     def arrived(self):
         """
         Checks if the elevator has arrived at the target floor.

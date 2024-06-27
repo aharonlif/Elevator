@@ -26,11 +26,11 @@ class Manager:
         pg.init()
         self.screen = pg.display.set_mode((settings.SCREEN_WIDTH, settings.SCREEN_HIGHT), pg.SRCALPHA)
         pg.display.set_caption("Building Floor")
-        self.buildings = [None] * len(buildings)
+        self.buildings = [None] * len(settings.BUILDINGS)
         self.group = pg.sprite.Group()
-        self.factory_of_buildings(buildings)
+        self.factory_of_buildings()
 
-    def factory_of_buildings(self, buildings):
+    def factory_of_buildings(self):
         """
         Creates and initializes buildings with the given number of floors and elevators.
         
@@ -38,11 +38,11 @@ class Manager:
             floors (int): Number of floors per building.
             elevators (int): Number of elevators per building.
         """
-        for i, build in enumerate(buildings):
+        for i, build in enumerate(settings.BUILDINGS):
             if i == 0:
                 x_position = 0
             else:
-                x_position = self.buildings[i-1].x_position + settings.FLOOR_WIDTH + settings.FLOOR_HIGHT * (buildings[i-1]["elevators"])
+                x_position = self.buildings[i-1].x_position + settings.FLOOR_WIDTH + settings.FLOOR_HIGHT * (settings.BUILDINGS[i-1]["elevators"])
             current_building = building.Building(build, x_position)
             self.buildings[i] = current_building
             self.group.add(current_building)
@@ -67,27 +67,6 @@ class Manager:
         """
         for build in self.buildings:
             build.update()
-
-    def run(self):
-        """
-        Main game loop. Handles events, updates the screen, and redraws all elements.
-        """
-        running = True
-        while running:
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    running = False 
-                elif event.type == pg.KEYDOWN:
-                    if event.key == pg.K_q:
-                        running = False
-                elif event.type == pg.MOUSEBUTTONDOWN:
-                    self.check_floor_click(event.pos)
-
-            self.screen.fill((255, 255, 255)) 
-            self.update()
-            self.draw()
-            pg.display.flip()
-        pg.quit()
 
     def draw(self):
         """

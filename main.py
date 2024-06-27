@@ -1,18 +1,33 @@
+import pygame as pg
+
 from manager import Manager
+import settings
+
 
 def main():
     """
-    Main function to initialize the Manager with a given number of buildings, 
-    floors, and elevators, and start the simulation.
-    """
-    # TODO: Generate random number of buildings, floors, and elevators
-    buildings = [{"floors": 7, "elevators" : 3},
-                 {"floors": 3, "elevators" : 1},
-                 {"floors": 6, "elevators" : 3},
-                 {"floors": 6, "elevators" : 1}]
+    Main game loop. Handles events, updates the screen, and redraws all elements of manager class.
+        """
+    manager = Manager(settings.BUILDINGS)
 
-    manager = Manager(buildings)
-    manager.run()
+    running = True
+    while running:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                running = False 
+            elif event.type == pg.KEYDOWN:
+                if event.key == pg.K_q:
+                    running = False
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                manager.check_floor_click(event.pos)
+
+        manager.screen.fill((255, 255, 255)) 
+        manager.update()
+        manager.draw()
+        pg.display.flip()
+    pg.quit()
+
+    
 
 if __name__ == "__main__":
     """

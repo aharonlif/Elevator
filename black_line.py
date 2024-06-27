@@ -1,4 +1,5 @@
 import pygame as pg
+
 import settings
 
 class Line(pg.sprite.Sprite):

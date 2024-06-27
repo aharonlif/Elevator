@@ -1,7 +1,7 @@
 import pygame as pg
+
 from button import Button
 import settings
-import time
 
 class Floor(pg.sprite.Sprite):
     """
