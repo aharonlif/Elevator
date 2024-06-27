@@ -39,6 +39,7 @@ class Elevator(pg.sprite.Sprite):
         self.movement_last_time = None
         self.last_drawn_time = 0
         self.arrival_time = 0
+        self.free = True
         self.y_position = bottomleft[1]  # Y position at start
         self.move_to_floors = []
 
@@ -53,12 +54,17 @@ class Elevator(pg.sprite.Sprite):
         Args:
             floor (int): Target floor.
         """
-        if  not self.free():
-            arrival_time = self.arrival_time + 2 + abs(self.floor - floor)/2 if not self.move_to_floors else self.move_to_floors[-1]["arrival time"]+2
+        if  not self.free:
+            if not (self.move_to_floors):
+                arrival_time = self.arrival_time + 2 + abs(self.floor - floor)/2 
+            else:
+                arrival_time = self.move_to_floors[-1]["arrival time"] + 2 + abs(self.move_to_floors[-1]["floor"] - floor)/2
+            
             self.move_to_floors.append({"floor": floor, "arrival time": arrival_time})
             return
         if self.moving():
-            raise (TypeError("Bug in the free function"))
+            raise (TypeError("Bug in the free argument"))
+        self.free = False
         self.floor = floor
         self.movement_last_time = time.time()
         self.arrival_time = int(abs(self.floor - self.current_floor))/2
@@ -69,6 +75,10 @@ class Elevator(pg.sprite.Sprite):
         current_time = time.time()
         elapsed_time = current_time - self.movement_last_time
         self.arrival_time -= elapsed_time
+        if self.arrival_time <= -2:
+            self.free = True
+        for floor in self.move_to_floors:
+            floor["arrival time"] -= elapsed_time
         self.movement_last_time = current_time
         return elapsed_time
 
@@ -86,28 +96,34 @@ class Elevator(pg.sprite.Sprite):
         return self.y_position
 
     def free(self):
-        """
-        Checks if 2 seconds have passed since the last movement started.
+        return self.free
+    #     """
+    #     Checks if 2 seconds have passed since the last movement started.
 
-        Returns:
-            bool: True if 2 seconds have passed, False otherwise.
-        """
-        if not self.movement_last_time:
-            return True
-        current_time = time.time()
-        elapsed_time = current_time - self.movement_last_time
-        return elapsed_time > 2
+    #     Returns:
+    #         bool: True if 2 seconds have passed, False otherwise.
+    #     """
+    #     if not self.movement_last_time:
+    #         return True
+    #     current_time = time.time()
+    #     elapsed_time = current_time - self.movement_last_time
+    #     return elapsed_time > 2
    
     def update(self):                    
-        if self.free():
-            self.movement_last_time = None
+        if self.free:
+            self.movement_last_time = 0
             self.made_a_sound = False
-
+            
             if self.move_to_floors:
+
                 floor = self.move_to_floors[0]["floor"]
                 self.arrival_time = self.move_to_floors[0]["arrival time"]
                 self.move_to_floors.pop(0)
                 self.move_to_floor(floor)
+                print(9999)
+            else:
+                return
+        self.update_location()
 
     def update_location(self):
         """
@@ -117,9 +133,9 @@ class Elevator(pg.sprite.Sprite):
             bool: True if the elevator is moving, False otherwise.
         """
         if not self.moving():
-            #TODO if self.free():
-            #     return False
-            # self.calculate_arrival_time()
+            if self.free:
+                return False
+            self.calculate_arrival_time()
             # print(self.arrival_time)
             return False
 

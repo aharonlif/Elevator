@@ -74,13 +74,19 @@ class Building(pg.sprite.Group):
             Elevator: The nearest available elevator.
         """
        
-        nearest_elevator = min(
-            (elevator for elevator in self.elevators ), 
-            key=lambda elevator: abs(elevator.floor - floor)/2 + elevator.moving()*2 + 0 if not elevator.move_to_floors else int(elevator.move_to_floors[-1]["arrival time"] + 2 ))
+        nearest_elevator = min( (
+                elevator for elevator in self.elevators ), 
+            key=lambda elevator: elevator.arrival_time + (not elevator.free) * 2 + abs(elevator.floor - floor)/2 if not (elevator.move_to_floors
+            ) else elevator.move_to_floors[-1]["arrival time"] + 2 + abs(elevator.move_to_floors[-1]["floor"] - floor)/2
+                )
         
         # moving function is not correct
         return nearest_elevator
 
+            # key=lambda elevator: abs(elevator.floor - floor)/2 + elevator.moving()*2 + 0 if not elevator.move_to_floors else int(
+            #     elevator.move_to_floors[-1]["arrival time"] + 2 
+                
+            #     )
     def cold_to_elevator(self, floor):
         """
         Moves the nearest available elevator to the specified floor.
@@ -106,7 +112,7 @@ class Building(pg.sprite.Group):
             if not elv.moving() and self.floors[elv.floor].button.color == settings.BUTTON_COLOR_TEMPORARILY: # moving function is not correct
                 self.floors[elv.floor].change_color(settings.BUTTON_COLOR)            
 
-            if elv.update_location():
+            if not elv.free:
                 floor = elv.floor
                 self.floors[floor].update_time_elevator(elv.arrival_time)
             if elv.move_to_floors:

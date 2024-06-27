@@ -6,10 +6,10 @@ def main():
     floors, and elevators, and start the simulation.
     """
     # TODO: Generate random number of buildings, floors, and elevators
-    buildings = [{"floors": 5, "elevators" : 3},
+    buildings = [{"floors": 7, "elevators" : 3},
                  {"floors": 3, "elevators" : 1},
-                 {"floors": 4, "elevators" : 2},
-                 {"floors": 6, "elevators" : 3}]
+                 {"floors": 6, "elevators" : 3},
+                 {"floors": 6, "elevators" : 1}]
 
     manager = Manager(buildings)
     manager.run()
